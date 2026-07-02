@@ -1,0 +1,1043 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ahmad Rizki Pratama - Personal Branding</title>
+  <meta property="og:title" content="Ahmad Rizki Pratama" />
+  <meta property="og:description" content="Website resmi Ahmad Rizki Pratama - Bersama Indonesia Maju" />
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@700;800;900&display=swap" rel="stylesheet" />
+
+  <!-- Google Material Icons -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+
+  <!-- React & ReactDOM CDN (Production) -->
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+
+  <!-- Babel Standalone CDN -->
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Inter', sans-serif; background: #fafafa; color: #171717; }
+
+    .playfair { font-family: 'Playfair Display', serif; }
+
+    html { scroll-behavior: smooth; }
+
+    .navbar-glass {
+      background: rgba(0,0,0,0.96);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    .hero-overlay {
+      background: linear-gradient(
+        to right,
+        rgba(0,0,0,0.80) 0%,
+        rgba(0,0,0,0.45) 55%,
+        rgba(0,0,0,0.15) 100%
+      );
+    }
+
+    .hero-img {
+      filter: grayscale(55%) contrast(1.05);
+      object-fit: cover;
+      object-position: center top;
+    }
+
+    @keyframes badge-pulse {
+      0%,100% { box-shadow: 0 0 0 0 rgba(220,38,38,0.45); }
+      50%      { box-shadow: 0 0 0 10px rgba(220,38,38,0); }
+    }
+    .badge-pulse { animation: badge-pulse 2.8s ease-in-out infinite; }
+
+    .card-hover {
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .card-hover:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 18px 36px rgba(0,0,0,0.13);
+    }
+
+    .nav-link { position: relative; transition: color 0.2s; }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -4px; left: 0;
+      width: 0; height: 2px;
+      background: #dc2626;
+      transition: width 0.3s ease;
+    }
+    .nav-link:hover::after, .nav-link.active::after { width: 100%; }
+    .nav-link.active { color: #dc2626 !important; }
+
+    .section-enter { animation: fadeInUp 0.55s ease both; }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(28px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .timeline-item:not(:last-child)::before {
+      content: '';
+      position: absolute;
+      left: 19px; top: 42px; bottom: -20px;
+      width: 2px;
+      background: linear-gradient(to bottom, #dc2626, #fca5a5);
+    }
+
+    .progress-bar { transition: width 1.4s cubic-bezier(.4,0,.2,1); }
+
+    .hamburger-line {
+      display: block; width: 24px; height: 2px;
+      background: white;
+      transition: all 0.3s ease;
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: #dc2626;
+      box-shadow: 0 0 0 3px rgba(220,38,38,0.1);
+    }
+
+    .mobile-menu { transition: max-height 0.35s ease, opacity 0.35s ease; overflow: hidden; }
+    .mobile-menu.closed { max-height: 0; opacity: 0; }
+    .mobile-menu.open  { max-height: 520px; opacity: 1; }
+
+    .stat-card { background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%); }
+
+    .program-g1 { background: linear-gradient(135deg,#dc2626 0%,#991b1b 100%); }
+    .program-g2 { background: linear-gradient(135deg,#1d4ed8 0%,#1e3a8a 100%); }
+    .program-g3 { background: linear-gradient(135deg,#059669 0%,#065f46 100%); }
+    .program-g4 { background: linear-gradient(135deg,#d97706 0%,#92400e 100%); }
+    .program-g5 { background: linear-gradient(135deg,#7c3aed 0%,#4c1d95 100%); }
+    .program-g6 { background: linear-gradient(135deg,#0891b2 0%,#164e63 100%); }
+
+    .signature { font-family: 'Playfair Display', serif; font-style: italic; font-weight: 700; }
+
+    select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; background-size: 18px; padding-right: 36px !important; }
+  </style>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: { 50:'#fef2f2',100:'#fee2e2',200:'#fecaca',300:'#fca5a5',400:'#f87171',500:'#ef4444',600:'#dc2626',700:'#b91c1c',800:'#991b1b',900:'#7f1d1d' },
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState, useEffect } = React;
+
+    /* ─── DATA ─── */
+    const PAGES = ['beranda','tentang','program','agenda','masukan'];
+    const NAV_LABELS = { beranda:'Beranda', tentang:'Tentang', program:'Program', agenda:'Agenda', masukan:'Masukan & Saran' };
+
+    const programs = [
+      { icon:'school',      title:'Pendidikan Unggul',    desc:'Meningkatkan akses dan kualitas pendidikan untuk semua lapisan masyarakat melalui beasiswa, pelatihan guru, dan infrastruktur sekolah modern di seluruh pelosok nusantara.',    g:'program-g1', tag:'Pendidikan'  },
+      { icon:'health_and_safety', title:'Kesehatan Rakyat', desc:'Memperluas layanan kesehatan gratis, membangun puskesmas modern, dan memastikan ketersediaan obat-obatan esensial di seluruh Indonesia.', g:'program-g2', tag:'Kesehatan'   },
+      { icon:'agriculture', title:'Ketahanan Pangan',     desc:'Mendorong swasembada pangan nasional melalui modernisasi pertanian, irigasi, dan subsidi pupuk bagi petani kecil demi kemandirian bangsa.',              g:'program-g3', tag:'Pertanian'  },
+      { icon:'factory',     title:'Industrialisasi',      desc:'Membangun kawasan industri strategis untuk menyerap jutaan tenaga kerja dan meningkatkan nilai ekspor produk dalam negeri.',                                   g:'program-g4', tag:'Industri'   },
+      { icon:'security',    title:'Pertahanan Negara',    desc:'Memperkuat alutsista dan profesionalisme TNI/Polri demi menjaga kedaulatan wilayah NKRI dari ancaman dalam maupun luar negeri.',                              g:'program-g5', tag:'Pertahanan' },
+      { icon:'solar_power', title:'Energi Terbarukan',    desc:'Mewujudkan transisi energi nasional menuju sumber energi bersih dan terbarukan untuk masa depan yang berkelanjutan dan ramah lingkungan.',                  g:'program-g6', tag:'Lingkungan' },
+    ];
+
+    const agendas = [
+      { date:'05', month:'Jul', year:'2026', title:'Dialog Kebangsaan Bersama Tokoh Masyarakat',     location:'Gedung Sate, Bandung',            type:'Dialog',    color:'bg-red-600'    },
+      { date:'12', month:'Jul', year:'2026', title:'Peluncuran Program Beasiswa Nasional 2026',       location:'Istora Senayan, Jakarta',          type:'Peluncuran', color:'bg-blue-700'   },
+      { date:'19', month:'Jul', year:'2026', title:'Kunjungan Kerja ke Kawasan Industri Batam',       location:'Kawasan Industri, Batam',          type:'Kunjungan', color:'bg-emerald-700' },
+      { date:'26', month:'Jul', year:'2026', title:'Forum Ekonomi Rakyat Indonesia Timur',            location:'Ballroom Hotel Makassar',          type:'Forum',     color:'bg-amber-600'  },
+      { date:'02', month:'Agu', year:'2026', title:'Rapat Koordinasi Nasional Ketahanan Pangan',      location:'Kementerian Pertanian, Jakarta',   type:'Rapat',     color:'bg-purple-700' },
+      { date:'09', month:'Agu', year:'2026', title:'Peresmian RSUD Modern di Papua',                  location:'Jayapura, Papua',                 type:'Peresmian', color:'bg-cyan-700'   },
+    ];
+
+    const timeline = [
+      { year:'2024–Sekarang', role:'Presiden Republik Indonesia',     desc:'Memimpin Indonesia menuju kemajuan dan kesejahteraan yang merata.' },
+      { year:'2019–2024',     role:'Menteri Pertahanan RI',           desc:'Memperkuat alutsista dan modernisasi sistem pertahanan nasional.' },
+      { year:'2018–2019',     role:'Calon Presiden RI',               desc:'Berpasangan sebagai calon presiden dalam Pemilu 2019.' },
+      { year:'2014–2019',     role:'Ketua Umum Partai',               desc:'Memimpin partai dan menjadi oposisi konstruktif di parlemen.' },
+      { year:'1997–2000',     role:'Panglima Kostrad',                desc:'Memimpin Komando Cadangan Strategis Angkatan Darat.' },
+      { year:'1979',          role:'Lulus Akademi Militer Magelang',  desc:'Memulai karier militer dengan penghargaan tertinggi.' },
+    ];
+
+    const skills = [
+      { label:'Kepemimpinan',          value:96 },
+      { label:'Diplomasi',             value:88 },
+      { label:'Strategi Pertahanan',   value:94 },
+      { label:'Ekonomi Rakyat',        value:85 },
+      { label:'Komunikasi Publik',     value:90 },
+    ];
+
+    /* ─── NAVBAR ─── */
+    function Navbar({ page, setPage }) {
+      const [scrolled, setScrolled] = useState(false);
+      const [mobileOpen, setMobileOpen] = useState(false);
+      const [searchOpen, setSearchOpen] = useState(false);
+
+      useEffect(() => {
+        const h = () => setScrolled(window.scrollY > 60);
+        window.addEventListener('scroll', h);
+        return () => window.removeEventListener('scroll', h);
+      }, []);
+
+      const go = (p) => { setPage(p); setMobileOpen(false); window.scrollTo({ top:0, behavior:'smooth' }); };
+
+      return (
+        <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'navbar-glass shadow-2xl' : 'bg-black bg-opacity-75'}`}>
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex items-center justify-between h-16">
+              {/* Brand */}
+              <button onClick={() => go('beranda')} className="bg-white rounded-sm px-3 py-1 flex items-center">
+                <span className="signature text-black text-xl tracking-tight">Ahmad R.</span>
+              </button>
+
+              {/* Desktop links */}
+              <div className="hidden md:flex items-center gap-8">
+                {PAGES.map(p => (
+                  <button key={p} onClick={() => go(p)}
+                    className={`nav-link text-sm font-medium text-white ${page === p ? 'active' : ''}`}>
+                    {NAV_LABELS[p]}
+                  </button>
+                ))}
+              </div>
+
+              {/* Search + hamburger */}
+              <div className="flex items-center gap-3">
+                <div className="hidden md:flex items-center">
+                  {searchOpen && (
+                    <input autoFocus placeholder="Cari..." onBlur={() => setSearchOpen(false)}
+                      className="bg-neutral-800 text-white text-sm rounded-l px-3 py-1.5 w-40 border border-neutral-700 border-r-0 focus:outline-none" />
+                  )}
+                  <button onClick={() => setSearchOpen(!searchOpen)}
+                    className="bg-red-600 hover:bg-red-700 text-white p-1.5 rounded transition-colors">
+                    <span className="material-icons text-lg leading-none">search</span>
+                  </button>
+                </div>
+                <button onClick={() => setMobileOpen(!mobileOpen)} className="md:hidden flex flex-col gap-1.5 p-1">
+                  <span className={`hamburger-line ${mobileOpen ? 'rotate-45 translate-y-2' : ''}`}></span>
+                  <span className={`hamburger-line ${mobileOpen ? 'opacity-0' : ''}`}></span>
+                  <span className={`hamburger-line ${mobileOpen ? '-rotate-45 -translate-y-2' : ''}`}></span>
+                </button>
+              </div>
+            </div>
+
+            {/* Mobile menu */}
+            <div className={`mobile-menu md:hidden ${mobileOpen ? 'open' : 'closed'}`}>
+              <div className="py-3 border-t border-neutral-800 flex flex-col gap-1">
+                {PAGES.map(p => (
+                  <button key={p} onClick={() => go(p)}
+                    className={`text-left px-3 py-2.5 text-sm font-medium rounded transition-colors ${page === p ? 'text-red-500 bg-red-950 bg-opacity-40' : 'text-white hover:bg-neutral-800'}`}>
+                    {NAV_LABELS[p]}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        </nav>
+      );
+    }
+
+    /* ─── BERANDA ─── */
+    function Beranda({ setPage }) {
+      return (
+        <div className="section-enter">
+          {/* Hero */}
+          <section className="relative flex items-end pb-24 overflow-hidden" style={{ height:'100vh', minHeight:'600px' }}>
+            <img src="https://images.pexels.com/photos/1036622/pexels-photo-1036622.jpeg"
+              alt="Hero" className="hero-img absolute inset-0 w-full h-full" />
+            <div className="hero-overlay absolute inset-0"></div>
+            <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+              <div className="max-w-md">
+                <p className="text-red-400 text-xs font-bold tracking-widest uppercase mb-4">Presiden Republik Indonesia</p>
+                <h1 className="playfair text-6xl sm:text-7xl font-black text-white leading-none mb-5">
+                  AHMAD<br/>RIZKI<br/>PRATAMA
+                </h1>
+                <div className="badge-pulse inline-block bg-red-600 text-white text-xs font-bold tracking-widest uppercase px-5 py-2 rounded-sm mb-8">
+                  Bersama Indonesia Maju
+                </div>
+                <p className="text-neutral-300 text-sm leading-relaxed mb-8 max-w-sm">
+                  Memimpin dengan integritas, berjuang untuk kesejahteraan seluruh rakyat Indonesia dari Sabang sampai Merauke.
+                </p>
+                <div className="flex flex-wrap gap-3">
+                  <button onClick={() => { setPage('tentang'); window.scrollTo(0,0); }}
+                    className="bg-red-600 hover:bg-red-700 text-white font-bold text-sm px-7 py-3 rounded transition-colors">
+                    Kenali Lebih Dekat
+                  </button>
+                  <button onClick={() => { setPage('program'); window.scrollTo(0,0); }}
+                    className="border border-white text-white hover:bg-white hover:text-black font-bold text-sm px-7 py-3 rounded transition-colors">
+                    Lihat Program
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 z-10">
+              <span className="text-neutral-400 text-xs tracking-widest uppercase">Gulir</span>
+              <div className="w-px h-10 bg-gradient-to-b from-neutral-400 to-transparent animate-pulse"></div>
+            </div>
+          </section>
+
+          {/* Stats */}
+          <section className="bg-neutral-950 py-14">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                {[
+                  { v:'48+',    l:'Tahun Pengabdian'     },
+                  { v:'514',    l:'Kabupaten/Kota'       },
+                  { v:'60 Jt+', l:'Rakyat Terlayani'     },
+                  { v:'120+',   l:'Program Nasional'     },
+                ].map((s,i) => (
+                  <div key={i} className="stat-card rounded-xl p-6 text-center card-hover">
+                    <div className="text-3xl font-black text-red-500 mb-1">{s.v}</div>
+                    <div className="text-neutral-400 text-xs font-medium tracking-wide">{s.l}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          {/* Program Preview */}
+          <section className="py-20 bg-neutral-50">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <div className="text-center mb-14">
+                <span className="text-red-600 text-xs font-bold tracking-widest uppercase">Program Unggulan</span>
+                <h2 className="playfair text-4xl font-black text-neutral-900 mt-3 mb-3">Prioritas Untuk Rakyat</h2>
+                <p className="text-neutral-500 max-w-lg mx-auto text-sm leading-relaxed">Enam pilar utama pembangunan nasional yang menjadi fokus pengabdian demi Indonesia yang lebih maju dan sejahtera.</p>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {programs.slice(0,3).map((p,i) => (
+                  <div key={i} className={`${p.g} rounded-xl p-7 text-white card-hover`}>
+                    <span className="material-icons text-4xl mb-4 opacity-90">{p.icon}</span>
+                    <h3 className="font-bold text-lg mb-2">{p.title}</h3>
+                    <p className="text-sm leading-relaxed opacity-85">{p.desc}</p>
+                  </div>
+                ))}
+              </div>
+              <div className="text-center mt-10">
+                <button onClick={() => { setPage('program'); window.scrollTo(0,0); }}
+                  className="bg-red-600 hover:bg-red-700 text-white font-bold text-sm px-8 py-3 rounded transition-colors inline-flex items-center gap-2">
+                  Lihat Semua Program <span className="material-icons text-base leading-none">arrow_forward</span>
+                </button>
+              </div>
+            </div>
+          </section>
+
+          {/* Quote */}
+          <section className="bg-red-700 py-16">
+            <div className="max-w-3xl mx-auto px-4 text-center">
+              <span className="material-icons text-5xl text-red-300 mb-4 block">format_quote</span>
+              <blockquote className="playfair text-2xl sm:text-3xl font-bold text-white leading-relaxed mb-5">
+                "Tidak ada yang tidak mungkin bagi bangsa yang bersatu, bekerja keras, dan tidak pernah menyerah."
+              </blockquote>
+              <cite className="text-red-200 text-sm font-medium not-italic tracking-wide">— Ahmad Rizki Pratama</cite>
+            </div>
+          </section>
+
+          {/* Agenda Preview */}
+          <section className="py-20 bg-white">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-12 gap-4">
+                <div>
+                  <span className="text-red-600 text-xs font-bold tracking-widest uppercase">Jadwal Terkini</span>
+                  <h2 className="playfair text-4xl font-black text-neutral-900 mt-2">Agenda Kegiatan</h2>
+                </div>
+                <button onClick={() => { setPage('agenda'); window.scrollTo(0,0); }}
+                  className="text-red-600 hover:text-red-800 text-sm font-bold inline-flex items-center gap-1 transition-colors">
+                  Selengkapnya <span className="material-icons text-sm leading-none">arrow_forward</span>
+                </button>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {agendas.slice(0,4).map((a,i) => (
+                  <div key={i} className="flex gap-4 bg-neutral-50 border border-neutral-100 rounded-xl p-5 card-hover">
+                    <div className={`${a.color} rounded-lg text-white text-center p-3 min-w-[58px]`}>
+                      <div className="text-xl font-black leading-none">{a.date}</div>
+                      <div className="text-xs font-semibold opacity-80 mt-0.5">{a.month}</div>
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <span className="inline-block bg-neutral-200 text-neutral-600 text-xs font-bold px-2 py-0.5 rounded mb-1.5">{a.type}</span>
+                      <h4 className="font-semibold text-neutral-900 text-sm leading-snug mb-1.5">{a.title}</h4>
+                      <div className="flex items-center gap-1 text-neutral-500 text-xs">
+                        <span className="material-icons text-xs leading-none">location_on</span>
+                        {a.location}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+        </div>
+      );
+    }
+
+    /* ─── TENTANG ─── */
+    function Tentang() {
+      const [tab, setTab] = useState('riwayat');
+
+      return (
+        <div className="section-enter pt-16">
+          <div className="bg-neutral-950 py-20 relative overflow-hidden">
+            <div className="absolute inset-0 opacity-10">
+              <img src="https://images.pexels.com/photos/3182812/pexels-photo-3182812.jpeg" alt="" className="w-full h-full object-cover" />
+            </div>
+            <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <span className="text-red-400 text-xs font-bold tracking-widest uppercase">Profil Lengkap</span>
+              <h1 className="playfair text-5xl font-black text-white mt-3 mb-3">Tentang Tokoh</h1>
+              <p className="text-neutral-400 max-w-xl text-sm leading-relaxed">Mengenal lebih dekat sosok pemimpin yang mengabdikan hidupnya untuk bangsa dan negara Indonesia.</p>
+            </div>
+          </div>
+
+          <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 items-start">
+              {/* Sidebar */}
+              <div className="lg:col-span-1 space-y-5">
+                <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
+                  <div className="relative">
+                    <img src="https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg"
+                      alt="Ahmad Rizki Pratama" className="w-full object-cover object-top"
+                      style={{ height:'280px', filter:'grayscale(20%)' }} />
+                    <div className="absolute bottom-0 left-0 right-0 p-5"
+                      style={{ background:'linear-gradient(to top,rgba(0,0,0,0.85),transparent)' }}>
+                      <div className="text-white font-bold text-lg leading-tight">Ahmad Rizki Pratama</div>
+                      <div className="text-red-400 text-xs mt-0.5">Presiden Republik Indonesia</div>
+                    </div>
+                  </div>
+                  <div className="p-5">
+                    {[
+                      { icon:'cake',       label:'Lahir',      value:'17 Agustus 1958, Jakarta'          },
+                      { icon:'school',     label:'Pendidikan', value:'Akad. Militer + Harvard Kennedy'   },
+                      { icon:'people',     label:'Pasangan',   value:'Dra. Siti Rahayu Pratama'          },
+                      { icon:'child_care', label:'Anak',       value:'3 Orang'                           },
+                    ].map((c,i) => (
+                      <div key={i} className="flex items-start gap-3 py-3 border-b border-neutral-100 last:border-0">
+                        <span className="material-icons text-red-600 text-base mt-0.5">{c.icon}</span>
+                        <div>
+                          <div className="text-xs text-neutral-400 font-medium">{c.label}</div>
+                          <div className="text-sm text-neutral-800 font-medium mt-0.5">{c.value}</div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="bg-white rounded-xl shadow p-5">
+                  <p className="text-xs font-bold text-neutral-400 uppercase tracking-widest mb-4">Media Sosial</p>
+                  {[
+                    { platform:'Twitter / X',  handle:'@ahmadrpratama',         icon:'tag'          },
+                    { platform:'Instagram',     handle:'@ahmadrpratama.official', icon:'photo_camera' },
+                    { platform:'YouTube',       handle:'Ahmad Rizki Official',    icon:'play_circle'  },
+                  ].map((s,i) => (
+                    <div key={i} className="flex items-center gap-3 text-sm py-2">
+                      <span className="material-icons text-red-600 text-base">{s.icon}</span>
+                      <div>
+                        <div className="font-semibold text-neutral-800 text-xs">{s.platform}</div>
+                        <div className="text-neutral-400 text-xs">{s.handle}</div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Content */}
+              <div className="lg:col-span-2">
+                {/* Tab bar */}
+                <div className="flex gap-1 mb-8 bg-neutral-100 rounded-lg p-1 w-fit">
+                  {[
+                    { k:'riwayat', l:'Riwayat Hidup' },
+                    { k:'karier',  l:'Karier'         },
+                    { k:'keahlian',l:'Keahlian'       },
+                  ].map(t => (
+                    <button key={t.k} onClick={() => setTab(t.k)}
+                      className={`px-4 py-2 text-sm font-bold rounded-md transition-all ${tab===t.k ? 'bg-white text-red-600 shadow' : 'text-neutral-500 hover:text-neutral-700'}`}>
+                      {t.l}
+                    </button>
+                  ))}
+                </div>
+
+                {tab === 'riwayat' && (
+                  <div>
+                    <h2 className="playfair text-3xl font-black text-neutral-900 mb-5">Perjalanan Hidup</h2>
+                    <div className="space-y-4 text-neutral-600 text-sm leading-relaxed">
+                      <p>Ahmad Rizki Pratama lahir pada 17 Agustus 1958 di Jakarta dari keluarga militer yang kental dengan nilai-nilai nasionalisme. Ayahnya, Mayor Jenderal (Purn.) Pratama Widjaya, adalah seorang perwira TNI yang berjasa dalam pembangunan militer Indonesia pasca-kemerdekaan.</p>
+                      <p>Sejak kecil, Rizki tumbuh dalam lingkungan yang sangat menghargai disiplin, integritas, dan pengabdian kepada bangsa. Ia menyelesaikan pendidikan dasar dan menengah di Jakarta sebelum melanjutkan ke Akademi Militer Magelang, lulus dengan penghargaan tertinggi pada tahun 1979.</p>
+                      <p>Setelah meniti karier militer selama lebih dari dua dekade, ia melanjutkan pendidikan di Harvard Kennedy School dan meraih gelar Master dalam Kebijakan Publik, yang semakin memperkokoh fondasi kepemimpinannya dalam memimpin sebuah bangsa besar.</p>
+                      <p>Perjalanan panjang pengabdiannya—dari lapangan militer hingga kursi kepresidenan—menjadikannya salah satu pemimpin paling berpengalaman yang pernah dimiliki Indonesia.</p>
+                    </div>
+                    <div className="mt-8 grid grid-cols-3 gap-3">
+                      {[
+                        { img:'https://images.pexels.com/photos/3184418/pexels-photo-3184418.jpeg', cap:'Rapat Kabinet'     },
+                        { img:'https://images.pexels.com/photos/3184639/pexels-photo-3184639.jpeg', cap:'Dialog Rakyat'    },
+                        { img:'https://images.pexels.com/photos/3182759/pexels-photo-3182759.jpeg', cap:'Kunjungan Daerah' },
+                      ].map((img,i) => (
+                        <div key={i} className="rounded-lg overflow-hidden">
+                          <img src={img.img} alt={img.cap} className="w-full h-28 object-cover" style={{ filter:'grayscale(30%)' }} />
+                          <div className="bg-neutral-100 text-neutral-500 text-xs text-center py-1.5">{img.cap}</div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {tab === 'karier' && (
+                  <div>
+                    <h2 className="playfair text-3xl font-black text-neutral-900 mb-8">Riwayat Karier</h2>
+                    <div className="relative pl-12 space-y-8">
+                      {timeline.map((item,i) => (
+                        <div key={i} className="timeline-item relative">
+                          <div className="absolute -left-12 top-0 w-10 h-10 bg-red-600 rounded-full flex items-center justify-center shadow">
+                            <span className="material-icons text-white text-base leading-none">star</span>
+                          </div>
+                          <div className="bg-white rounded-xl p-5 shadow-sm border border-neutral-100 card-hover">
+                            <div className="text-xs font-bold text-red-600 tracking-wider mb-1">{item.year}</div>
+                            <div className="font-bold text-neutral-900 mb-1">{item.role}</div>
+                            <div className="text-neutral-500 text-sm leading-relaxed">{item.desc}</div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {tab === 'keahlian' && (
+                  <div>
+                    <h2 className="playfair text-3xl font-black text-neutral-900 mb-2">Kompetensi & Keahlian</h2>
+                    <p className="text-neutral-500 text-sm mb-8">Bidang utama yang menjadi kekuatan dalam kepemimpinan nasional.</p>
+                    <div className="space-y-5">
+                      {skills.map((s,i) => (
+                        <div key={i}>
+                          <div className="flex justify-between mb-2">
+                            <span className="text-sm font-bold text-neutral-800">{s.label}</span>
+                            <span className="text-sm font-black text-red-600">{s.value}%</span>
+                          </div>
+                          <div className="h-2.5 bg-neutral-100 rounded-full overflow-hidden">
+                            <div className="h-full rounded-full progress-bar"
+                              style={{ width:`${s.value}%`, background:'linear-gradient(to right,#dc2626,#f87171)' }}></div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                    <div className="mt-10 grid grid-cols-2 gap-4">
+                      {[
+                        { icon:'emoji_events',      title:'Penghargaan',     value:'47+' },
+                        { icon:'public',            title:'Negara Dikunjungi',value:'68+' },
+                        { icon:'menu_book',         title:'Karya Tulis',     value:'12'  },
+                        { icon:'record_voice_over', title:'Pidato Nasional', value:'500+'},
+                      ].map((c,i) => (
+                        <div key={i} className="bg-neutral-950 rounded-xl p-5 text-center card-hover">
+                          <span className="material-icons text-red-500 text-3xl mb-2 block">{c.icon}</span>
+                          <div className="text-2xl font-black text-white mb-1">{c.value}</div>
+                          <div className="text-neutral-400 text-xs">{c.title}</div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          </section>
+        </div>
+      );
+    }
+
+    /* ─── PROGRAM ─── */
+    function Program() {
+      const [filter, setFilter] = useState('Semua');
+      const tags = ['Semua', ...programs.map(p => p.tag)];
+      const filtered = filter === 'Semua' ? programs : programs.filter(p => p.tag === filter);
+
+      return (
+        <div className="section-enter pt-16">
+          <div className="bg-neutral-950 py-20 relative overflow-hidden">
+            <div className="absolute inset-0 opacity-10">
+              <img src="https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg" alt="" className="w-full h-full object-cover" />
+            </div>
+            <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <span className="text-red-400 text-xs font-bold tracking-widest uppercase">6 Pilar Utama</span>
+              <h1 className="playfair text-5xl font-black text-white mt-3 mb-3">Program Unggulan</h1>
+              <p className="text-neutral-400 max-w-xl text-sm leading-relaxed">Program strategis yang menjadi prioritas untuk mewujudkan Indonesia yang adil, makmur, dan berdaulat.</p>
+            </div>
+          </div>
+
+          {/* Filter */}
+          <div className="bg-white border-b border-neutral-100 sticky top-16 z-40">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <div className="flex gap-2 overflow-x-auto py-3" style={{ scrollbarWidth:'none' }}>
+                {tags.map(t => (
+                  <button key={t} onClick={() => setFilter(t)}
+                    className={`whitespace-nowrap px-4 py-1.5 rounded-full text-xs font-bold transition-colors ${filter===t ? 'bg-red-600 text-white' : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200'}`}>
+                    {t}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7">
+              {filtered.map((p,i) => (
+                <div key={i} className="bg-white rounded-2xl shadow-md overflow-hidden card-hover border border-neutral-100">
+                  <div className={`${p.g} p-8 relative`}>
+                    <span className="material-icons text-5xl text-white opacity-90">{p.icon}</span>
+                    <div className="absolute top-5 right-5 bg-white bg-opacity-20 text-white text-xs font-bold px-3 py-1 rounded-full">
+                      {p.tag}
+                    </div>
+                  </div>
+                  <div className="p-6">
+                    <h3 className="font-black text-xl text-neutral-900 mb-3">{p.title}</h3>
+                    <p className="text-neutral-500 text-sm leading-relaxed">{p.desc}</p>
+                    <button className="mt-5 text-red-600 text-sm font-bold inline-flex items-center gap-1 hover:gap-2 transition-all">
+                      Pelajari Lebih Lanjut <span className="material-icons text-sm leading-none">arrow_forward</span>
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          <section className="bg-red-600 py-16">
+            <div className="max-w-3xl mx-auto px-4 text-center">
+              <h2 className="playfair text-3xl font-black text-white mb-4">Bersama Wujudkan Indonesia Maju</h2>
+              <p className="text-red-100 text-sm mb-8 max-w-md mx-auto">Setiap program dirancang dengan hati nurani untuk rakyat. Mari bersama menjadi bagian dari perubahan nyata.</p>
+              <div className="flex flex-wrap gap-4 justify-center">
+                <div className="bg-white text-red-600 font-bold text-sm px-6 py-3 rounded flex items-center gap-2 cursor-pointer">
+                  <span className="material-icons text-base leading-none">download</span>
+                  Unduh Buku Visi Misi
+                </div>
+                <div className="border border-white text-white font-bold text-sm px-6 py-3 rounded flex items-center gap-2 cursor-pointer hover:bg-white hover:text-red-600 transition-colors">
+                  <span className="material-icons text-base leading-none">share</span>
+                  Bagikan Program
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      );
+    }
+
+    /* ─── AGENDA ─── */
+    function Agenda() {
+      const [selected, setSelected] = useState(null);
+
+      const calDays = [null,null,null,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31];
+      const highlighted = [5,12,19,26];
+
+      return (
+        <div className="section-enter pt-16">
+          <div className="bg-neutral-950 py-20 relative overflow-hidden">
+            <div className="absolute inset-0 opacity-10">
+              <img src="https://images.pexels.com/photos/3184360/pexels-photo-3184360.jpeg" alt="" className="w-full h-full object-cover" />
+            </div>
+            <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <span className="text-red-400 text-xs font-bold tracking-widest uppercase">Jadwal Resmi</span>
+              <h1 className="playfair text-5xl font-black text-white mt-3 mb-3">Agenda Kegiatan</h1>
+              <p className="text-neutral-400 max-w-xl text-sm leading-relaxed">Ikuti setiap langkah pengabdian melalui jadwal kegiatan resmi yang terus diperbarui.</p>
+            </div>
+          </div>
+
+          {/* Kategori legend */}
+          <div className="bg-white border-b border-neutral-100">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
+              <div className="flex flex-wrap gap-4 items-center">
+                <span className="text-xs font-bold text-neutral-400 uppercase tracking-widest">Kategori:</span>
+                {[
+                  { t:'Dialog',    c:'bg-red-600'     },
+                  { t:'Peluncuran',c:'bg-blue-700'    },
+                  { t:'Kunjungan', c:'bg-emerald-700' },
+                  { t:'Forum',     c:'bg-amber-600'   },
+                  { t:'Rapat',     c:'bg-purple-700'  },
+                  { t:'Peresmian', c:'bg-cyan-700'    },
+                ].map((cat,i) => (
+                  <div key={i} className="flex items-center gap-1.5">
+                    <div className={`w-2.5 h-2.5 rounded-full ${cat.c}`}></div>
+                    <span className="text-xs text-neutral-600">{cat.t}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+              {/* Agenda list */}
+              <div className="lg:col-span-2 space-y-4">
+                {agendas.map((a,i) => (
+                  <div key={i} onClick={() => setSelected(selected===i ? null : i)}
+                    className={`bg-white rounded-xl border-2 cursor-pointer transition-all card-hover ${selected===i ? 'border-red-600 shadow-lg' : 'border-neutral-100 shadow-sm'}`}>
+                    <div className="flex items-start gap-5 p-5">
+                      <div className={`${a.color} rounded-xl text-white text-center p-3 min-w-[62px] flex-shrink-0`}>
+                        <div className="text-2xl font-black leading-none">{a.date}</div>
+                        <div className="text-xs font-semibold uppercase mt-1 opacity-90">{a.month}</div>
+                        <div className="text-xs opacity-70">{a.year}</div>
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-start justify-between gap-2">
+                          <div>
+                            <span className="inline-block bg-neutral-100 text-neutral-600 text-xs font-bold px-2 py-0.5 rounded mb-2">{a.type}</span>
+                            <h3 className="font-bold text-neutral-900 leading-snug">{a.title}</h3>
+                          </div>
+                          <span className={`material-icons text-neutral-400 flex-shrink-0 transition-transform ${selected===i ? 'rotate-180' : ''}`}>expand_more</span>
+                        </div>
+                        <div className="flex items-center gap-1 text-neutral-500 text-sm mt-2">
+                          <span className="material-icons text-sm leading-none">location_on</span>
+                          {a.location}
+                        </div>
+                      </div>
+                    </div>
+                    {selected === i && (
+                      <div className="px-5 pb-5 border-t border-neutral-50 pt-4">
+                        <p className="text-neutral-500 text-sm leading-relaxed mb-4">
+                          Kegiatan ini merupakan bagian dari rangkaian program strategis nasional yang bertujuan memperkuat sinergi antara pemerintah pusat, daerah, dan seluruh komponen masyarakat dalam mewujudkan cita-cita bangsa Indonesia.
+                        </p>
+                        <div className="flex flex-wrap gap-2">
+                          {[
+                            { icon:'schedule', txt:'09.00 – 17.00 WIB'    },
+                            { icon:'people',   txt:'Terbuka untuk Umum'   },
+                            { icon:'live_tv',  txt:'Siaran Langsung'      },
+                          ].map((b,j) => (
+                            <div key={j} className="flex items-center gap-1.5 bg-neutral-50 border border-neutral-100 px-3 py-1.5 rounded text-xs text-neutral-600">
+                              <span className="material-icons text-xs leading-none">{b.icon}</span>
+                              {b.txt}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+
+              {/* Sidebar */}
+              <div className="lg:col-span-1 space-y-5">
+                {/* Mini calendar */}
+                <div className="bg-neutral-950 rounded-xl p-6 text-white">
+                  <div className="flex items-center justify-between mb-5">
+                    <h3 className="font-bold text-sm">Juli 2026</h3>
+                    <div className="flex gap-2">
+                      <button className="text-neutral-400 hover:text-white"><span className="material-icons text-base leading-none">chevron_left</span></button>
+                      <button className="text-neutral-400 hover:text-white"><span className="material-icons text-base leading-none">chevron_right</span></button>
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-7 gap-1 text-center mb-1">
+                    {['M','S','S','R','K','J','S'].map((d,i) => (
+                      <div key={i} className="text-neutral-500 text-xs font-bold py-1">{d}</div>
+                    ))}
+                  </div>
+                  <div className="grid grid-cols-7 gap-1 text-center">
+                    {calDays.map((d,i) => (
+                      <div key={i} className={`text-xs rounded py-1.5 font-medium
+                        ${!d ? '' : highlighted.includes(d) ? 'bg-red-600 text-white font-black' : 'text-neutral-300 hover:bg-neutral-800 cursor-pointer'}`}>
+                        {d || ''}
+                      </div>
+                    ))}
+                  </div>
+                  <div className="mt-4 flex items-center gap-2 text-xs text-neutral-400">
+                    <div className="w-3 h-3 rounded-full bg-red-600 flex-shrink-0"></div>
+                    Hari dengan agenda
+                  </div>
+                </div>
+
+                {/* Stats */}
+                <div className="bg-white rounded-xl border border-neutral-100 p-5">
+                  <h3 className="font-bold text-neutral-900 text-sm mb-4">Ringkasan Bulan Ini</h3>
+                  <div className="space-y-3">
+                    {[
+                      { l:'Total Kegiatan',  v:'6', icon:'event'         },
+                      { l:'Kota Dikunjungi', v:'5', icon:'location_city' },
+                      { l:'Kegiatan Terbuka',v:'4', icon:'people'        },
+                    ].map((s,i) => (
+                      <div key={i} className="flex items-center justify-between">
+                        <div className="flex items-center gap-2 text-neutral-600 text-sm">
+                          <span className="material-icons text-sm text-red-600 leading-none">{s.icon}</span>
+                          {s.l}
+                        </div>
+                        <span className="font-black text-neutral-900">{s.v}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="bg-red-600 rounded-xl p-6 text-white">
+                  <span className="material-icons text-3xl mb-3 block">notifications_active</span>
+                  <h3 className="font-bold text-base mb-2">Notifikasi Agenda</h3>
+                  <p className="text-red-100 text-xs mb-4">Dapatkan pengingat otomatis setiap ada agenda kegiatan terbaru.</p>
+                  <button className="bg-white text-red-600 text-xs font-bold px-4 py-2 rounded w-full hover:bg-red-50 transition-colors">
+                    Aktifkan Notifikasi
+                  </button>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      );
+    }
+
+    /* ─── MASUKAN ─── */
+    function Masukan() {
+      const [form, setForm] = useState({ nama:'', email:'', topik:'', pesan:'' });
+      const [submitted, setSubmitted] = useState(false);
+      const [errors, setErrors] = useState({});
+
+      const validate = () => {
+        const e = {};
+        if (!form.nama.trim())                                   e.nama  = 'Nama wajib diisi';
+        if (!form.email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/))   e.email = 'Email tidak valid';
+        if (!form.topik)                                         e.topik = 'Silakan pilih topik';
+        if (form.pesan.trim().length < 10)                       e.pesan = 'Pesan minimal 10 karakter';
+        return e;
+      };
+
+      const submit = (ev) => {
+        ev.preventDefault();
+        const e = validate();
+        if (Object.keys(e).length) { setErrors(e); return; }
+        setSubmitted(true);
+      };
+
+      const setField = (k, v) => { setForm({...form,[k]:v}); setErrors({...errors,[k]:''}); };
+
+      return (
+        <div className="section-enter pt-16">
+          <div className="bg-neutral-950 py-20 relative overflow-hidden">
+            <div className="absolute inset-0 opacity-10">
+              <img src="https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg" alt="" className="w-full h-full object-cover" />
+            </div>
+            <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <span className="text-red-400 text-xs font-bold tracking-widest uppercase">Suara Rakyat</span>
+              <h1 className="playfair text-5xl font-black text-white mt-3 mb-3">Masukan & Saran</h1>
+              <p className="text-neutral-400 max-w-xl text-sm leading-relaxed">Pendapat Anda adalah bagian dari demokrasi yang sesungguhnya. Kami mendengarkan setiap suara rakyat.</p>
+            </div>
+          </div>
+
+          <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
+              {/* Info sidebar */}
+              <div className="lg:col-span-1 space-y-5">
+                <div>
+                  <h2 className="playfair text-2xl font-black text-neutral-900 mb-3">Kontak Resmi</h2>
+                  <p className="text-neutral-500 text-sm leading-relaxed">Sampaikan aspirasi, kritik, dan saran melalui formulir di samping atau saluran resmi berikut.</p>
+                </div>
+                <div className="space-y-3">
+                  {[
+                    { icon:'location_on', title:'Alamat Kantor', value:'Jl. Merdeka Barat No. 1, Jakarta Pusat 10110' },
+                    { icon:'phone',       title:'Telepon',       value:'(021) 3847-2000'                              },
+                    { icon:'email',       title:'Email',         value:'aspirasi@ahmadrp.go.id'                      },
+                    { icon:'schedule',    title:'Jam Pelayanan', value:'Senin–Jumat, 08.00–16.00 WIB'               },
+                  ].map((c,i) => (
+                    <div key={i} className="flex gap-4 p-4 bg-white rounded-xl border border-neutral-100 shadow-sm">
+                      <div className="bg-red-50 rounded-lg p-2 h-fit flex-shrink-0">
+                        <span className="material-icons text-red-600 text-lg leading-none">{c.icon}</span>
+                      </div>
+                      <div>
+                        <div className="text-xs font-bold text-neutral-400 uppercase tracking-wider mb-1">{c.title}</div>
+                        <div className="text-sm text-neutral-800">{c.value}</div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                <div className="bg-neutral-950 rounded-xl p-6">
+                  <h3 className="font-bold text-white text-sm mb-4">Statistik Aspirasi</h3>
+                  {[
+                    { l:'Masukan Diterima',  v:'12.847' },
+                    { l:'Ditindaklanjuti',   v:'9.231'  },
+                    { l:'Tingkat Respons',   v:'97%'    },
+                  ].map((s,i) => (
+                    <div key={i} className="flex justify-between text-sm py-1.5 border-b border-neutral-800 last:border-0">
+                      <span className="text-neutral-400">{s.l}</span>
+                      <span className="text-red-400 font-bold">{s.v}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Form */}
+              <div className="lg:col-span-2">
+                {submitted ? (
+                  <div className="bg-white rounded-2xl border border-neutral-100 shadow p-12 text-center">
+                    <div className="w-20 h-20 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                      <span className="material-icons text-emerald-600 text-4xl">check_circle</span>
+                    </div>
+                    <h2 className="playfair text-2xl font-black text-neutral-900 mb-3">Terima Kasih!</h2>
+                    <p className="text-neutral-500 text-sm mb-1">Masukan <strong className="text-neutral-800">{form.nama}</strong> telah berhasil kami terima.</p>
+                    <p className="text-neutral-400 text-xs mb-8">Tim kami akan menindaklanjuti aspirasi Anda dalam 3–5 hari kerja. Konfirmasi dikirim ke <strong className="text-neutral-600">{form.email}</strong></p>
+                    <button
+                      onClick={() => { setSubmitted(false); setForm({nama:'',email:'',topik:'',pesan:''}); setErrors({}); }}
+                      className="bg-red-600 hover:bg-red-700 text-white font-bold text-sm px-7 py-3 rounded transition-colors">
+                      Kirim Masukan Lain
+                    </button>
+                  </div>
+                ) : (
+                  <div className="bg-white rounded-2xl border border-neutral-100 shadow p-8">
+                    <h2 className="playfair text-2xl font-black text-neutral-900 mb-1">Formulir Aspirasi</h2>
+                    <p className="text-neutral-400 text-sm mb-8">Semua kolom wajib diisi. Identitas Anda dijaga kerahasiaannya.</p>
+                    <form onSubmit={submit} noValidate className="space-y-5">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                        <div>
+                          <label className="block text-xs font-bold text-neutral-700 uppercase tracking-wider mb-2">Nama Lengkap *</label>
+                          <input type="text" value={form.nama} onChange={e => setField('nama', e.target.value)}
+                            placeholder="Masukkan nama lengkap"
+                            className={`form-input w-full border rounded-lg px-4 py-3 text-sm placeholder-neutral-400 transition-all ${errors.nama ? 'border-red-500 bg-red-50' : 'border-neutral-200 bg-neutral-50'}`} />
+                          {errors.nama && <p className="text-red-600 text-xs mt-1">{errors.nama}</p>}
+                        </div>
+                        <div>
+                          <label className="block text-xs font-bold text-neutral-700 uppercase tracking-wider mb-2">Email *</label>
+                          <input type="email" value={form.email} onChange={e => setField('email', e.target.value)}
+                            placeholder="nama@email.com"
+                            className={`form-input w-full border rounded-lg px-4 py-3 text-sm placeholder-neutral-400 transition-all ${errors.email ? 'border-red-500 bg-red-50' : 'border-neutral-200 bg-neutral-50'}`} />
+                          {errors.email && <p className="text-red-600 text-xs mt-1">{errors.email}</p>}
+                        </div>
+                      </div>
+
+                      <div>
+                        <label className="block text-xs font-bold text-neutral-700 uppercase tracking-wider mb-2">Topik *</label>
+                        <select value={form.topik} onChange={e => setField('topik', e.target.value)}
+                          className={`form-input w-full border rounded-lg px-4 py-3 text-sm transition-all ${errors.topik ? 'border-red-500 bg-red-50' : 'border-neutral-200 bg-neutral-50'} ${form.topik ? 'text-neutral-900' : 'text-neutral-400'}`}>
+                          <option value="" disabled>-- Pilih topik aspirasi --</option>
+                          <option>Pendidikan</option>
+                          <option>Kesehatan</option>
+                          <option>Ekonomi &amp; Lapangan Kerja</option>
+                          <option>Pertahanan &amp; Keamanan</option>
+                          <option>Lingkungan Hidup</option>
+                          <option>Infrastruktur</option>
+                          <option>Lainnya</option>
+                        </select>
+                        {errors.topik && <p className="text-red-600 text-xs mt-1">{errors.topik}</p>}
+                      </div>
+
+                      <div>
+                        <label className="block text-xs font-bold text-neutral-700 uppercase tracking-wider mb-2">Masukan / Saran *</label>
+                        <textarea value={form.pesan} onChange={e => setField('pesan', e.target.value)}
+                          placeholder="Tuliskan masukan, saran, atau aspirasi Anda di sini..."
+                          rows="6"
+                          className={`form-input w-full border rounded-lg px-4 py-3 text-sm placeholder-neutral-400 resize-none transition-all ${errors.pesan ? 'border-red-500 bg-red-50' : 'border-neutral-200 bg-neutral-50'}`}></textarea>
+                        <div className="flex justify-between mt-1">
+                          {errors.pesan ? <p className="text-red-600 text-xs">{errors.pesan}</p> : <span/>}
+                          <span className="text-neutral-400 text-xs">{form.pesan.length} karakter</span>
+                        </div>
+                      </div>
+
+                      <div className="flex items-start gap-3">
+                        <input type="checkbox" id="agree" className="mt-0.5 accent-red-600" required />
+                        <label htmlFor="agree" className="text-xs text-neutral-500 leading-relaxed cursor-pointer">
+                          Saya menyetujui bahwa data yang dikirimkan digunakan untuk keperluan tindak lanjut aspirasi sesuai kebijakan privasi.
+                        </label>
+                      </div>
+
+                      <button type="submit"
+                        className="w-full bg-red-600 hover:bg-red-700 text-white font-bold text-sm py-4 rounded-lg transition-colors flex items-center justify-center gap-2">
+                        <span className="material-icons text-base leading-none">send</span>
+                        Kirim Aspirasi
+                      </button>
+                    </form>
+                  </div>
+                )}
+              </div>
+            </div>
+          </section>
+        </div>
+      );
+    }
+
+    /* ─── FOOTER ─── */
+    function Footer({ setPage }) {
+      const go = (p) => { setPage(p); window.scrollTo({ top:0, behavior:'smooth' }); };
+      return (
+        <footer className="bg-neutral-950 text-neutral-400">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-8">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-10 mb-12">
+              <div>
+                <div className="bg-white rounded-sm px-3 py-1 inline-block mb-4">
+                  <span className="signature text-black text-xl">Ahmad R.</span>
+                </div>
+                <p className="text-sm leading-relaxed mb-5">Memimpin dengan integritas, berjuang untuk kesejahteraan seluruh rakyat Indonesia.</p>
+                <div className="flex gap-2">
+                  {['tag','photo_camera','play_circle','group'].map((ic,i) => (
+                    <button key={i} className="bg-neutral-800 hover:bg-red-600 rounded-full p-2 transition-colors">
+                      <span className="material-icons text-sm leading-none">{ic}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <div>
+                <h4 className="text-white font-bold text-sm mb-5">Navigasi</h4>
+                <ul className="space-y-2.5">
+                  {PAGES.map(p => (
+                    <li key={p}><button onClick={() => go(p)} className="text-sm hover:text-red-400 transition-colors">{NAV_LABELS[p]}</button></li>
+                  ))}
+                </ul>
+              </div>
+              <div>
+                <h4 className="text-white font-bold text-sm mb-5">Program Unggulan</h4>
+                <ul className="space-y-2.5">
+                  {programs.slice(0,5).map((p,i) => (
+                    <li key={i}><span className="text-sm hover:text-red-400 transition-colors cursor-pointer">{p.title}</span></li>
+                  ))}
+                </ul>
+              </div>
+              <div>
+                <h4 className="text-white font-bold text-sm mb-5">Kontak</h4>
+                <ul className="space-y-3 text-sm">
+                  <li className="flex items-start gap-2"><span className="material-icons text-sm text-red-500 mt-0.5 leading-none">location_on</span>Jl. Merdeka Barat No. 1, Jakarta Pusat</li>
+                  <li className="flex items-center gap-2"><span className="material-icons text-sm text-red-500 leading-none">phone</span>(021) 3847-2000</li>
+                  <li className="flex items-center gap-2"><span className="material-icons text-sm text-red-500 leading-none">email</span>aspirasi@ahmadrp.go.id</li>
+                </ul>
+              </div>
+            </div>
+            <div className="border-t border-neutral-800 pt-6 flex flex-col sm:flex-row justify-between items-center gap-3 text-xs">
+              <p>&copy; 2026 Ahmad Rizki Pratama. Seluruh hak cipta dilindungi.</p>
+              <p>Dibuat dengan <span className="text-red-500">&#9829;</span> untuk Indonesia</p>
+            </div>
+          </div>
+        </footer>
+      );
+    }
+
+    /* ─── SCROLL TO TOP ─── */
+    function ScrollToTop() {
+      const [show, setShow] = useState(false);
+      useEffect(() => {
+        const h = () => setShow(window.scrollY > 400);
+        window.addEventListener('scroll', h);
+        return () => window.removeEventListener('scroll', h);
+      }, []);
+      if (!show) return null;
+      return (
+        <button onClick={() => window.scrollTo({ top:0, behavior:'smooth' })}
+          className="fixed bottom-6 right-6 z-50 bg-red-600 hover:bg-red-700 text-white rounded-full w-12 h-12 flex items-center justify-center shadow-xl transition-colors"
+          aria-label="Kembali ke atas">
+          <span className="material-icons leading-none">keyboard_arrow_up</span>
+        </button>
+      );
+    }
+
+    /* ─── APP ROOT ─── */
+    function App() {
+      const [page, setPage] = useState('beranda');
+      const views = { beranda:<Beranda setPage={setPage}/>, tentang:<Tentang/>, program:<Program/>, agenda:<Agenda/>, masukan:<Masukan/> };
+      return (
+        <>
+          <Navbar page={page} setPage={setPage} />
+          <main>{views[page]}</main>
+          <Footer setPage={setPage} />
+          <ScrollToTop />
+        </>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+  </script>
+</body>
+</html>
