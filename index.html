@@ -5,10 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Asep Zaenal Mustofa - Personal Branding</title>
   <meta property="og:title" content="Asep Zaenal Mustofa" />
-  <meta property="og:description" content="Website resmi Ahmad Rizki Pratama - Bersama Indonesia Maju" />
+  <meta property="og:description" content="Website resmi Asep Zaenal Mustofa - Bersama Indonesia Maju" />
 
-  <!-- Tailwind CSS CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Tailwind CSS via CDN (stylesheet) - lebih stabil dan tidak menyebabkan CORS -->
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
 
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -30,7 +30,6 @@
     body { font-family: 'Inter', sans-serif; background: #fafafa; color: #171717; }
 
     .playfair { font-family: 'Playfair Display', serif; }
-
     html { scroll-behavior: smooth; }
 
     .navbar-glass {
@@ -40,12 +39,7 @@
     }
 
     .hero-overlay {
-      background: linear-gradient(
-        to right,
-        rgba(0,0,0,0.80) 0%,
-        rgba(0,0,0,0.45) 55%,
-        rgba(0,0,0,0.15) 100%
-      );
+      background: linear-gradient(to right, rgba(0,0,0,0.80) 0%, rgba(0,0,0,0.45) 55%, rgba(0,0,0,0.15) 100%);
     }
 
     .hero-img {
@@ -56,7 +50,7 @@
 
     @keyframes badge-pulse {
       0%,100% { box-shadow: 0 0 0 0 rgba(220,38,38,0.45); }
-      50%      { box-shadow: 0 0 0 10px rgba(220,38,38,0); }
+      50% { box-shadow: 0 0 0 10px rgba(220,38,38,0); }
     }
     .badge-pulse { animation: badge-pulse 2.8s ease-in-out infinite; }
 
@@ -68,7 +62,10 @@
       box-shadow: 0 18px 36px rgba(0,0,0,0.13);
     }
 
-    .nav-link { position: relative; transition: color 0.2s; }
+    .nav-link {
+      position: relative;
+      transition: color 0.2s;
+    }
     .nav-link::after {
       content: '';
       position: absolute;
@@ -77,13 +74,14 @@
       background: #dc2626;
       transition: width 0.3s ease;
     }
-    .nav-link:hover::after, .nav-link.active::after { width: 100%; }
+    .nav-link:hover::after,
+    .nav-link.active::after { width: 100%; }
     .nav-link.active { color: #dc2626 !important; }
 
     .section-enter { animation: fadeInUp 0.55s ease both; }
     @keyframes fadeInUp {
       from { opacity: 0; transform: translateY(28px); }
-      to   { opacity: 1; transform: translateY(0); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     .timeline-item:not(:last-child)::before {
@@ -108,9 +106,12 @@
       box-shadow: 0 0 0 3px rgba(220,38,38,0.1);
     }
 
-    .mobile-menu { transition: max-height 0.35s ease, opacity 0.35s ease; overflow: hidden; }
+    .mobile-menu {
+      transition: max-height 0.35s ease, opacity 0.35s ease;
+      overflow: hidden;
+    }
     .mobile-menu.closed { max-height: 0; opacity: 0; }
-    .mobile-menu.open  { max-height: 520px; opacity: 1; }
+    .mobile-menu.open { max-height: 520px; opacity: 1; }
 
     .stat-card { background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%); }
 
@@ -123,65 +124,113 @@
 
     .signature { font-family: 'Playfair Display', serif; font-style: italic; font-weight: 700; }
 
-    select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; background-size: 18px; padding-right: 36px !important; }
-  </style>
-
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            primary: { 50:'#fef2f2',100:'#fee2e2',200:'#fecaca',300:'#fca5a5',400:'#f87171',500:'#ef4444',600:'#dc2626',700:'#b91c1c',800:'#991b1b',900:'#7f1d1d' },
-          }
-        }
-      }
+    select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      background-size: 18px;
+      padding-right: 36px !important;
     }
-  </script>
+
+    .news-img {
+      aspect-ratio: 16/10;
+      object-fit: cover;
+    }
+
+    /* custom line-clamp */
+    .line-clamp-2 {
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .line-clamp-3 {
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+  </style>
 </head>
 <body>
   <div id="root"></div>
 
   <script type="text/babel">
-    const { useState, useEffect } = React;
+    const { useState, useEffect, useMemo } = React;
 
     /* ─── DATA ─── */
-    const PAGES = ['beranda','tentang','program','agenda','masukan'];
-    const NAV_LABELS = { beranda:'Beranda', tentang:'Tentang', program:'Program', agenda:'Agenda', masukan:'Masukan & Saran' };
+    const PAGES = ['beranda', 'tentang', 'program', 'agenda', 'berita', 'masukan'];
+    const NAV_LABELS = {
+      beranda: 'Beranda',
+      tentang: 'Tentang',
+      program: 'Program',
+      agenda: 'Agenda',
+      berita: 'Berita',
+      masukan: 'Masukan & Saran'
+    };
 
     const programs = [
-      { icon:'school',      title:'Pendidikan Unggul',    desc:'Meningkatkan akses dan kualitas pendidikan untuk semua lapisan masyarakat melalui beasiswa, pelatihan guru, dan infrastruktur sekolah modern di seluruh pelosok nusantara.',    g:'program-g1', tag:'Pendidikan'  },
-      { icon:'health_and_safety', title:'Kesehatan Rakyat', desc:'Memperluas layanan kesehatan gratis, membangun puskesmas modern, dan memastikan ketersediaan obat-obatan esensial di seluruh Indonesia.', g:'program-g2', tag:'Kesehatan'   },
-      { icon:'agriculture', title:'Ketahanan Pangan',     desc:'Mendorong swasembada pangan nasional melalui modernisasi pertanian, irigasi, dan subsidi pupuk bagi petani kecil demi kemandirian bangsa.',              g:'program-g3', tag:'Pertanian'  },
-      { icon:'factory',     title:'Industrialisasi',      desc:'Membangun kawasan industri strategis untuk menyerap jutaan tenaga kerja dan meningkatkan nilai ekspor produk dalam negeri.',                                   g:'program-g4', tag:'Industri'   },
-      { icon:'security',    title:'Pertahanan Negara',    desc:'Memperkuat alutsista dan profesionalisme TNI/Polri demi menjaga kedaulatan wilayah NKRI dari ancaman dalam maupun luar negeri.',                              g:'program-g5', tag:'Pertahanan' },
-      { icon:'solar_power', title:'Energi Terbarukan',    desc:'Mewujudkan transisi energi nasional menuju sumber energi bersih dan terbarukan untuk masa depan yang berkelanjutan dan ramah lingkungan.',                  g:'program-g6', tag:'Lingkungan' },
+      { icon:'school', title:'Pendidikan Unggul', desc:'Meningkatkan akses dan kualitas pendidikan untuk semua lapisan masyarakat melalui beasiswa, pelatihan guru, dan infrastruktur sekolah modern di seluruh pelosok nusantara.', g:'program-g1', tag:'Pendidikan' },
+      { icon:'health_and_safety', title:'Kesehatan Rakyat', desc:'Memperluas layanan kesehatan gratis, membangun puskesmas modern, dan memastikan ketersediaan obat-obatan esensial di seluruh Indonesia.', g:'program-g2', tag:'Kesehatan' },
+      { icon:'agriculture', title:'Ketahanan Pangan', desc:'Mendorong swasembada pangan nasional melalui modernisasi pertanian, irigasi, dan subsidi pupuk bagi petani kecil demi kemandirian bangsa.', g:'program-g3', tag:'Pertanian' },
+      { icon:'factory', title:'Industrialisasi', desc:'Membangun kawasan industri strategis untuk menyerap jutaan tenaga kerja dan meningkatkan nilai ekspor produk dalam negeri.', g:'program-g4', tag:'Industri' },
+      { icon:'security', title:'Pertahanan Negara', desc:'Memperkuat alutsista dan profesionalisme TNI/Polri demi menjaga kedaulatan wilayah NKRI dari ancaman dalam maupun luar negeri.', g:'program-g5', tag:'Pertahanan' },
+      { icon:'solar_power', title:'Energi Terbarukan', desc:'Mewujudkan transisi energi nasional menuju sumber energi bersih dan terbarukan untuk masa depan yang berkelanjutan dan ramah lingkungan.', g:'program-g6', tag:'Lingkungan' },
     ];
 
     const agendas = [
-      { date:'05', month:'Jul', year:'2026', title:'Dialog Kebangsaan Bersama Tokoh Masyarakat',     location:'Gedung Sate, Bandung',            type:'Dialog',    color:'bg-red-600'    },
-      { date:'12', month:'Jul', year:'2026', title:'Peluncuran Program Beasiswa Nasional 2026',       location:'Istora Senayan, Jakarta',          type:'Peluncuran', color:'bg-blue-700'   },
-      { date:'19', month:'Jul', year:'2026', title:'Kunjungan Kerja ke Kawasan Industri Batam',       location:'Kawasan Industri, Batam',          type:'Kunjungan', color:'bg-emerald-700' },
-      { date:'26', month:'Jul', year:'2026', title:'Forum Ekonomi Rakyat Indonesia Timur',            location:'Ballroom Hotel Makassar',          type:'Forum',     color:'bg-amber-600'  },
-      { date:'02', month:'Agu', year:'2026', title:'Rapat Koordinasi Nasional Ketahanan Pangan',      location:'Kementerian Pertanian, Jakarta',   type:'Rapat',     color:'bg-purple-700' },
-      { date:'09', month:'Agu', year:'2026', title:'Peresmian RSUD Modern di Papua',                  location:'Jayapura, Papua',                 type:'Peresmian', color:'bg-cyan-700'   },
+      { date:'05', month:'Jul', year:'2026', title:'Dialog Kebangsaan Bersama Tokoh Masyarakat', location:'Gedung Sate, Bandung', type:'Dialog', color:'bg-red-600' },
+      { date:'12', month:'Jul', year:'2026', title:'Peluncuran Program Beasiswa Nasional 2026', location:'Istora Senayan, Jakarta', type:'Peluncuran', color:'bg-blue-700' },
+      { date:'19', month:'Jul', year:'2026', title:'Kunjungan Kerja ke Kawasan Industri Batam', location:'Kawasan Industri, Batam', type:'Kunjungan', color:'bg-emerald-700' },
+      { date:'26', month:'Jul', year:'2026', title:'Forum Ekonomi Rakyat Indonesia Timur', location:'Ballroom Hotel Makassar', type:'Forum', color:'bg-amber-600' },
+      { date:'02', month:'Agu', year:'2026', title:'Rapat Koordinasi Nasional Ketahanan Pangan', location:'Kementerian Pertanian, Jakarta', type:'Rapat', color:'bg-purple-700' },
+      { date:'09', month:'Agu', year:'2026', title:'Peresmian RSUD Modern di Papua', location:'Jayapura, Papua', type:'Peresmian', color:'bg-cyan-700' },
     ];
 
     const timeline = [
-      { year:'2024–Sekarang', role:'Presiden Republik Indonesia',     desc:'Memimpin Indonesia menuju kemajuan dan kesejahteraan yang merata.' },
-      { year:'2019–2024',     role:'Menteri Pertahanan RI',           desc:'Memperkuat alutsista dan modernisasi sistem pertahanan nasional.' },
-      { year:'2018–2019',     role:'Calon Presiden RI',               desc:'Berpasangan sebagai calon presiden dalam Pemilu 2019.' },
-      { year:'2014–2019',     role:'Ketua Umum Partai',               desc:'Memimpin partai dan menjadi oposisi konstruktif di parlemen.' },
-      { year:'1997–2000',     role:'Panglima Kostrad',                desc:'Memimpin Komando Cadangan Strategis Angkatan Darat.' },
-      { year:'1979',          role:'Lulus Akademi Militer Magelang',  desc:'Memulai karier militer dengan penghargaan tertinggi.' },
+      { year:'2024–Sekarang', role:'Presiden Republik Indonesia', desc:'Memimpin Indonesia menuju kemajuan dan kesejahteraan yang merata.' },
+      { year:'2019–2024', role:'Menteri Pertahanan RI', desc:'Memperkuat alutsista dan modernisasi sistem pertahanan nasional.' },
+      { year:'2018–2019', role:'Calon Presiden RI', desc:'Berpasangan sebagai calon presiden dalam Pemilu 2019.' },
+      { year:'2014–2019', role:'Ketua Umum Partai', desc:'Memimpin partai dan menjadi oposisi konstruktif di parlemen.' },
+      { year:'1997–2000', role:'Panglima Kostrad', desc:'Memimpin Komando Cadangan Strategis Angkatan Darat.' },
+      { year:'1979', role:'Lulus Akademi Militer Magelang', desc:'Memulai karier militer dengan penghargaan tertinggi.' },
     ];
 
     const skills = [
-      { label:'Kepemimpinan',          value:96 },
-      { label:'Diplomasi',             value:88 },
-      { label:'Strategi Pertahanan',   value:94 },
-      { label:'Ekonomi Rakyat',        value:85 },
-      { label:'Komunikasi Publik',     value:90 },
+      { label:'Kepemimpinan', value:96 },
+      { label:'Diplomasi', value:88 },
+      { label:'Strategi Pertahanan', value:94 },
+      { label:'Ekonomi Rakyat', value:85 },
+      { label:'Komunikasi Publik', value:90 },
     ];
+
+    // Berita dummy
+    const beritaData = [
+      { id:1, title:'Presiden Resmikan Program Beasiswa Nasional 2026 untuk 10.000 Mahasiswa', category:'Pendidikan', date:'12 Juli 2026', image:'https://images.pexels.com/photos/5212345/pexels-photo-5212345.jpeg', excerpt:'Program ini memberikan akses pendidikan tinggi bagi putra-putri terbaik dari keluarga kurang mampu di seluruh Indonesia, dengan total anggaran Rp 2,5 triliun.', content:'Dalam acara yang berlangsung di Istora Senayan, Presiden secara resmi meluncurkan Program Beasiswa Nasional 2026. Program ini menjangkau 10.000 mahasiswa baru dari berbagai daerah, dengan priorutama pada bidang sains, teknologi, dan pendidikan guru. Para penerima beasiswa akan mendapatkan biaya kuliah penuh, uang saku, serta bimbingan karir selama 4 tahun. Presiden menyatakan bahwa investasi di bidang pendidikan adalah kunci utama untuk mencetak generasi emas Indonesia di masa depan.', tag:'Pendidikan' },
+      { id:2, title:'Kunjungan Kerja ke Kawasan Industri Batam: Target Ekspor Meningkat 30%', category:'Ekonomi', date:'10 Juli 2026', image:'https://images.pexels.com/photos/3184418/pexels-photo-3184418.jpeg', excerpt:'Presiden meninjau langsung perkembangan kawasan industri di Batam dan menargetkan peningkatan ekspor hingga 30% pada akhir tahun 2026 melalui optimalisasi kawasan ekonomi khusus.', content:'Kunjungan ke Batam ini merupakan bagian dari strategi nasional untuk memperkuat sektor manufaktur dan ekspor. Presiden berinteraksi dengan para pelaku industri, membahas insentif fiskal, kemudahan perizinan, dan pengembangan SDM. Dengan adanya kawasan ekonomi khusus yang terus diperluas, diharapkan investasi asing dan domestik semakin deras masuk, menciptakan lapangan kerja baru bagi masyarakat setempat.', tag:'Ekonomi' },
+      { id:3, title:'Dialog Kebangsaan di Gedung Sate: Memperkuat Persatuan di Tengah Perbedaan', category:'Politik', date:'07 Juli 2026', image:'https://images.pexels.com/photos/3184639/pexels-photo-3184639.jpeg', excerpt:'Acara dialog yang dihadiri oleh tokoh agama, akademisi, dan masyarakat sipil ini membahas pentingnya moderasi beragama dan toleransi sebagai pilar utama keutuhan NKRI.', content:'Gedung Sate menjadi saksi dialog kebangsaan yang hangat antara Presiden dan berbagai elemen masyarakat. Dalam forum ini, ditekankan bahwa perbedaan adalah kekayaan bangsa yang harus dikelola dengan bijak. Presiden mengajak seluruh komponen bangsa untuk menjadikan Pancasila sebagai bintang penuntun dalam setiap langkah kebangsaan. Dialog ini juga menghasilkan rekomendasi untuk penguatan pendidikan karakter dan wawasan kebangsaan di sekolah-sekolah.', tag:'Politik' },
+      { id:4, title:'Peluncuran Program Ketahanan Pangan di Jawa Timur: Swasembada Beras 2027', category:'Pangan', date:'05 Juli 2026', image:'https://images.pexels.com/photos/235725/pexels-photo-235725.jpeg', excerpt:'Presiden meluncurkan program pertanian terpadu di Jawa Timur yang menargetkan swasembada beras nasional pada tahun 2027 melalui modernisasi irigasi dan bantuan alat pertanian.', content:'Di tengah lahan pertanian yang subur, Presiden meresmikan program pertanian terpadu yang melibatkan petani, koperasi, dan dinas pertanian setempat. Program ini mencakup pembangunan jaringan irigasi baru, penyediaan pupuk subsidi, dan pelatihan pertanian presisi. Dengan adanya modernisasi pertanian, diharapkan produktivitas padi meningkat signifikan dan Indonesia tidak lagi bergantung pada impor beras.', tag:'Pangan' },
+      { id:5, title:'Peresmian RSUD Modern di Papua: Layanan Kesehatan Setara dengan Rumah Sakit Internasional', category:'Kesehatan', date:'02 Juli 2026', image:'https://images.pexels.com/photos/263402/pexels-photo-263402.jpeg', excerpt:'Rumah Sakit Umum Daerah baru di Jayapura dilengkapi dengan fasilitas medis canggih dan tenaga kesehatan terlatih, menjawab kebutuhan layanan kesehatan berkualitas di wilayah timur Indonesia.', content:'Peresmian RSUD Modern di Papua menjadi tonggak penting dalam pemerataan layanan kesehatan. Rumah sakit ini memiliki 300 tempat tidur, ruang operasi modern, laboratorium lengkap, dan unit gawat darurat 24 jam. Presiden menegaskan bahwa tidak ada lagi alasan bagi masyarakat Papua untuk mendapatkan layanan kesehatan yang layak. Kehadiran RSUD ini juga diharapkan menjadi pusat rujukan bagi wilayah sekitarnya.', tag:'Kesehatan' },
+      { id:6, title:'Forum Ekonomi Rakyat Indonesia Timur: Dorong Pertumbuhan Inklusif', category:'Ekonomi', date:'29 Juni 2026', image:'https://images.pexels.com/photos/3182759/pexels-photo-3182759.jpeg', excerpt:'Forum ini mempertemukan pelaku UMKM, koperasi, dan perbankan untuk merumuskan strategi percepatan ekonomi rakyat di kawasan Indonesia Timur yang selama ini tertinggal.', content:'Bertempat di Makassar, Forum Ekonomi Rakyat ini menghasilkan 12 rekomendasi kebijakan, di antaranya kemudahan akses kredit bagi UMKM, penguatan rantai pasok lokal, serta pengembangan pariwisata berbasis masyarakat. Presiden menekankan pentingnya pertumbuhan yang inklusif, di mana setiap warga negara merasakan manfaat pembangunan, bukan hanya segelintir elit.', tag:'Ekonomi' },
+      { id:7, title:'Rapat Koordinasi Nasional Ketahanan Pangan: Antisipasi Krisis Pangan Global', category:'Pangan', date:'26 Juni 2026', image:'https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg', excerpt:'Pemerintah pusat dan daerah bersinergi menyusun langkah-langkah strategis menghadapi potensi krisis pangan global yang dipicu oleh perubahan iklim dan konflik internasional.', content:'Rapat koordinasi yang dipimpin langsung oleh Presiden ini mengumpulkan menteri terkait, gubernur, dan kepala dinas pertanian dari seluruh provinsi. Hasil rapat menetapkan 5 program prioritas: perluasan lahan tanam, peningkatan produktivitas pertanian, penguatan cadangan beras nasional, diversifikasi pangan lokal, dan pengendalian harga pangan di pasaran. Semua pihak sepakat bahwa ketahanan pangan adalah isu kedaulatan yang tidak bisa ditawar.', tag:'Pangan' },
+      { id:8, title:'Kunjungan ke Pusat Energi Terbarukan di NTT: Indonesia Menuju Net Zero 2060', category:'Lingkungan', date:'23 Juni 2026', image:'https://images.pexels.com/photos/414837/pexels-photo-414837.jpeg', excerpt:'Presiden mengunjungi pembangkit listrik tenaga surya dan angin di Nusa Tenggara Timur sebagai bukti komitmen Indonesia dalam transisi energi menuju emisi nol bersih pada tahun 2060.', content:'Di NTT, Presiden menyaksikan langsung pengoperasian PLTS dan PLTB yang menjadi proyek percontohan energi terbarukan di wilayah timur. Kapasitas terpasang mencapai 200 MW, cukup untuk memenuhi kebutuhan listrik 150.000 rumah tangga. Presiden menyatakan bahwa Indonesia memiliki potensi besar di bidang energi terbarukan dan akan terus mendorong investasi hijau. Target net zero 2060 bukan sekadar wacana, tetapi komitmen nyata yang diwujudkan melalui proyek-proyek strategis nasional.', tag:'Lingkungan' },
+      { id:9, title:'Resmikan Pabrik Pengolahan Kelapa Sawit Ramah Lingkungan di Riau', category:'Industri', date:'20 Juni 2026', image:'https://images.pexels.com/photos/3184360/pexels-photo-3184360.jpeg', excerpt:'Pabrik baru ini menerapkan teknologi hijau yang mengurangi emisi karbon dan limbah, sekaligus meningkatkan nilai tambah produk kelapa sawit di pasar global.', content:'Pabrik pengolahan kelapa sawit di Riau ini merupakan hasil kerja sama antara BUMN dan investor asing. Dengan kapasitas 500 ton per hari, pabrik ini tidak hanya meningkatkan produksi minyak sawit berkualitas tinggi, tetapi juga menghasilkan turunan produk seperti biodiesel, kosmetik, dan bahan baku makanan. Presiden menekankan pentingnya hilirisasi industri untuk menciptakan lapangan kerja dan meningkatkan devisa negara.', tag:'Industri' },
+      { id:10, title:'Peringatan Hari Kebangkitan Nasional: Api Semangat Persatuan', category:'Politik', date:'17 Juni 2026', image:'https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg', excerpt:'Dalam pidato kenegaraan di peringatan Hari Kebangkitan Nasional, Presiden mengajak seluruh rakyat untuk kembali menggali semangat persatuan dan gotong royong yang menjadi ciri khas bangsa Indonesia.', content:'Di hadapan ribuan peserta upacara di Istana Merdeka, Presiden menyampaikan pidato yang menggugah semangat kebangsaan. Ia mengingatkan bahwa kemerdekaan dan kemajuan Indonesia tidak pernah tercapai tanpa kerja sama dan persatuan. Di era globalisasi dan disrupsi teknologi, nilai-nilai kebangsaan harus tetap menjadi filter utama. Peringatan ini juga diisi dengan pemberian penghargaan kepada tokoh-tokoh yang telah berjasa dalam pembangunan nasional.', tag:'Politik' },
+      { id:11, title:'Kerja Sama dengan Korea Selatan untuk Pengembangan Teknologi AI di Indonesia', category:'Pendidikan', date:'14 Juni 2026', image:'https://images.pexels.com/photos/256658/pexels-photo-256658.jpeg', excerpt:'Indonesia dan Korea Selatan menandatangani nota kesepahaman di bidang riset dan pengembangan kecerdasan buatan (AI) yang akan melibatkan 10 universitas terkemuka di tanah air.', content:'Nota kesepahaman ini merupakan tindak lanjut dari kunjungan kenegaraan Presiden ke Korea Selatan tahun lalu. Melalui kerja sama ini, Indonesia akan mendapatkan transfer teknologi, pelatihan bagi 1.000 insinyur AI, dan pembangunan pusat riset AI di Bandung dan Surabaya. Presiden optimis bahwa kolaborasi ini akan mempercepat transformasi digital Indonesia dan menciptakan inovasi-inovasi baru di berbagai sektor.', tag:'Pendidikan' },
+      { id:12, title:'Gerakan Nasional Sejuta Pohon: Langkah Konkret Menyelamatkan Lingkungan', category:'Lingkungan', date:'10 Juni 2026', image:'https://images.pexels.com/photos/60013/pexels-photo-60013.jpeg', excerpt:'Gerakan ini mengajak masyarakat, pelajar, dan aparatur pemerintah untuk menanam 1 juta pohon dalam satu bulan sebagai upaya mitigasi perubahan iklim dan rehabilitasi hutan.', content:'Dimulai dari kawasan hutan lindung di Kalimantan, Gerakan Nasional Sejuta Pohon menjadi program unggulan Presiden di bidang lingkungan. Selain menanam pohon, gerakan ini juga mengedukasi masyarakat tentang pentingnya menjaga hutan dan lahan kritis. Presiden menargetkan bahwa dalam 5 tahun ke depan, Indonesia akan memiliki tambahan hutan seluas 2 juta hektar melalui program ini. Langkah ini sejalan dengan komitmen Indonesia dalam Perjanjian Paris untuk mengurangi emisi karbon.', tag:'Lingkungan' }
+    ];
+
+    const beritaCategories = ['Semua', ...new Set(beritaData.map(b => b.category))];
+    const categoryColors = {
+      'Pendidikan': 'bg-blue-600',
+      'Ekonomi': 'bg-emerald-600',
+      'Politik': 'bg-red-600',
+      'Pangan': 'bg-amber-600',
+      'Kesehatan': 'bg-cyan-600',
+      'Lingkungan': 'bg-green-600',
+      'Industri': 'bg-purple-600',
+    };
+    const getColor = (cat) => categoryColors[cat] || 'bg-neutral-600';
 
     /* ─── NAVBAR ─── */
     function Navbar({ page, setPage }) {
@@ -190,33 +239,33 @@
       const [searchOpen, setSearchOpen] = useState(false);
 
       useEffect(() => {
-        const h = () => setScrolled(window.scrollY > 60);
-        window.addEventListener('scroll', h);
-        return () => window.removeEventListener('scroll', h);
+        const handleScroll = () => setScrolled(window.scrollY > 60);
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
       }, []);
 
-      const go = (p) => { setPage(p); setMobileOpen(false); window.scrollTo({ top:0, behavior:'smooth' }); };
+      const go = (p) => {
+        setPage(p);
+        setMobileOpen(false);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      };
 
       return (
         <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'navbar-glass shadow-2xl' : 'bg-black bg-opacity-75'}`}>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex items-center justify-between h-16">
-              {/* Brand */}
               <button onClick={() => go('beranda')} className="bg-white rounded-sm px-3 py-1 flex items-center">
                 <span className="signature text-black text-xl tracking-tight">Asep ZM</span>
               </button>
 
-              {/* Desktop links */}
               <div className="hidden md:flex items-center gap-8">
                 {PAGES.map(p => (
-                  <button key={p} onClick={() => go(p)}
-                    className={`nav-link text-sm font-medium text-white ${page === p ? 'active' : ''}`}>
+                  <button key={p} onClick={() => go(p)} className={`nav-link text-sm font-medium text-white ${page === p ? 'active' : ''}`}>
                     {NAV_LABELS[p]}
                   </button>
                 ))}
               </div>
 
-              {/* Search + hamburger */}
               <div className="flex items-center gap-3">
                 <div className="hidden md:flex items-center">
                   {searchOpen && (
@@ -236,7 +285,6 @@
               </div>
             </div>
 
-            {/* Mobile menu */}
             <div className={`mobile-menu md:hidden ${mobileOpen ? 'open' : 'closed'}`}>
               <div className="py-3 border-t border-neutral-800 flex flex-col gap-1">
                 {PAGES.map(p => (
@@ -256,10 +304,8 @@
     function Beranda({ setPage }) {
       return (
         <div className="section-enter">
-          {/* Hero */}
           <section className="relative flex items-end pb-24 overflow-hidden" style={{ height:'100vh', minHeight:'600px' }}>
-            <img src="https://i.ibb.co.com/whzCx2mz/Gemini-Generated-Image-lrqln1lrqln1lrql.png"
-              alt="Hero" className="hero-img absolute inset-0 w-full h-full" />
+            <img src="https://i.ibb.co.com/whzCx2mz/Gemini-Generated-Image-lrqln1lrqln1lrql.png" alt="Hero" className="hero-img absolute inset-0 w-full h-full" />
             <div className="hero-overlay absolute inset-0"></div>
             <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
               <div className="max-w-md">
@@ -286,20 +332,18 @@
               </div>
             </div>
             <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 z-10">
-              <span className="text-neutral-400 text-xs tracking-widest uppercase"></span>
               <div className="w-px h-10 bg-gradient-to-b from-neutral-400 to-transparent animate-pulse"></div>
             </div>
           </section>
 
-          {/* Stats */}
           <section className="bg-neutral-950 py-14">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 {[
-                  { v:'48+',    l:'Tahun Pengabdian'     },
-                  { v:'514',    l:'Kabupaten/Kota'       },
-                  { v:'60 Jt+', l:'Rakyat Terlayani'     },
-                  { v:'120+',   l:'Program Nasional'     },
+                  { v:'48+', l:'Tahun Pengabdian' },
+                  { v:'514', l:'Kabupaten/Kota' },
+                  { v:'60 Jt+', l:'Rakyat Terlayani' },
+                  { v:'120+', l:'Program Nasional' },
                 ].map((s,i) => (
                   <div key={i} className="stat-card rounded-xl p-6 text-center card-hover">
                     <div className="text-3xl font-black text-red-500 mb-1">{s.v}</div>
@@ -310,7 +354,6 @@
             </div>
           </section>
 
-          {/* Program Preview */}
           <section className="py-20 bg-neutral-50">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="text-center mb-14">
@@ -336,18 +379,16 @@
             </div>
           </section>
 
-          {/* Quote */}
           <section className="bg-red-700 py-16">
             <div className="max-w-3xl mx-auto px-4 text-center">
               <span className="material-icons text-5xl text-red-300 mb-4 block">format_quote</span>
               <blockquote className="playfair text-2xl sm:text-3xl font-bold text-white leading-relaxed mb-5">
                 "Tidak ada yang tidak mungkin bagi bangsa yang bersatu, bekerja keras, dan tidak pernah menyerah."
               </blockquote>
-              <cite className="text-red-200 text-sm font-medium not-italic tracking-wide">— Ahmad Rizki Pratama</cite>
+              <cite className="text-red-200 text-sm font-medium not-italic tracking-wide">— Asep Zaenal Mustofa</cite>
             </div>
           </section>
 
-          {/* Agenda Preview */}
           <section className="py-20 bg-white">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-12 gap-4">
@@ -403,25 +444,21 @@
 
           <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 items-start">
-              {/* Sidebar */}
               <div className="lg:col-span-1 space-y-5">
                 <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
                   <div className="relative">
-                    <img src="https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg"
-                      alt="Ahmad Rizki Pratama" className="w-full object-cover object-top"
-                      style={{ height:'280px', filter:'grayscale(20%)' }} />
-                    <div className="absolute bottom-0 left-0 right-0 p-5"
-                      style={{ background:'linear-gradient(to top,rgba(0,0,0,0.85),transparent)' }}>
+                    <img src="https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg" alt="Asep Zaenal Mustofa" className="w-full object-cover object-top" style={{ height:'280px', filter:'grayscale(20%)' }} />
+                    <div className="absolute bottom-0 left-0 right-0 p-5" style={{ background:'linear-gradient(to top,rgba(0,0,0,0.85),transparent)' }}>
                       <div className="text-white font-bold text-lg leading-tight">ASEP ZAENAL MUSTOFA</div>
                       <div className="text-red-400 text-xs mt-0.5">Tokoh Sunda</div>
                     </div>
                   </div>
                   <div className="p-5">
                     {[
-                      { icon:'cake',       label:'Lahir',      value:'17 Agustus 1958, Jakarta'          },
-                      { icon:'school',     label:'Pendidikan', value:'Akad. Militer + Harvard Kennedy'   },
-                      { icon:'people',     label:'Pasangan',   value:'Dra. Siti Rahayu Pratama'          },
-                      { icon:'child_care', label:'Anak',       value:'3 Orang'                           },
+                      { icon:'cake', label:'Lahir', value:'17 Agustus 1958, Jakarta' },
+                      { icon:'school', label:'Pendidikan', value:'Akad. Militer + Harvard Kennedy' },
+                      { icon:'people', label:'Pasangan', value:'Dra. Siti Rahayu' },
+                      { icon:'child_care', label:'Anak', value:'3 Orang' },
                     ].map((c,i) => (
                       <div key={i} className="flex items-start gap-3 py-3 border-b border-neutral-100 last:border-0">
                         <span className="material-icons text-red-600 text-base mt-0.5">{c.icon}</span>
@@ -437,9 +474,9 @@
                 <div className="bg-white rounded-xl shadow p-5">
                   <p className="text-xs font-bold text-neutral-400 uppercase tracking-widest mb-4">Media Sosial</p>
                   {[
-                    { platform:'Twitter / X',  handle:'@ahmadrpratama',         icon:'tag'          },
-                    { platform:'Instagram',     handle:'@ahmadrpratama.official', icon:'photo_camera' },
-                    { platform:'YouTube',       handle:'Ahmad Rizki Official',    icon:'play_circle'  },
+                    { platform:'Twitter / X', handle:'@asepzm', icon:'tag' },
+                    { platform:'Instagram', handle:'@asepzm.official', icon:'photo_camera' },
+                    { platform:'YouTube', handle:'Asep ZM Official', icon:'play_circle' },
                   ].map((s,i) => (
                     <div key={i} className="flex items-center gap-3 text-sm py-2">
                       <span className="material-icons text-red-600 text-base">{s.icon}</span>
@@ -452,14 +489,12 @@
                 </div>
               </div>
 
-              {/* Content */}
               <div className="lg:col-span-2">
-                {/* Tab bar */}
                 <div className="flex gap-1 mb-8 bg-neutral-100 rounded-lg p-1 w-fit">
                   {[
                     { k:'riwayat', l:'Riwayat Hidup' },
-                    { k:'karier',  l:'Karier'         },
-                    { k:'keahlian',l:'Keahlian'       },
+                    { k:'karier', l:'Karier' },
+                    { k:'keahlian', l:'Keahlian' },
                   ].map(t => (
                     <button key={t.k} onClick={() => setTab(t.k)}
                       className={`px-4 py-2 text-sm font-bold rounded-md transition-all ${tab===t.k ? 'bg-white text-red-600 shadow' : 'text-neutral-500 hover:text-neutral-700'}`}>
@@ -472,15 +507,15 @@
                   <div>
                     <h2 className="playfair text-3xl font-black text-neutral-900 mb-5">Perjalanan Hidup</h2>
                     <div className="space-y-4 text-neutral-600 text-sm leading-relaxed">
-                      <p>Ahmad Rizki Pratama lahir pada 17 Agustus 1958 di Jakarta dari keluarga militer yang kental dengan nilai-nilai nasionalisme. Ayahnya, Mayor Jenderal (Purn.) Pratama Widjaya, adalah seorang perwira TNI yang berjasa dalam pembangunan militer Indonesia pasca-kemerdekaan.</p>
-                      <p>Sejak kecil, Rizki tumbuh dalam lingkungan yang sangat menghargai disiplin, integritas, dan pengabdian kepada bangsa. Ia menyelesaikan pendidikan dasar dan menengah di Jakarta sebelum melanjutkan ke Akademi Militer Magelang, lulus dengan penghargaan tertinggi pada tahun 1979.</p>
+                      <p>Asep Zaenal Mustofa lahir pada 17 Agustus 1958 di Jakarta dari keluarga militer yang kental dengan nilai-nilai nasionalisme. Ayahnya, Mayor Jenderal (Purn.) Mustofa Widjaya, adalah seorang perwira TNI yang berjasa dalam pembangunan militer Indonesia pasca-kemerdekaan.</p>
+                      <p>Sejak kecil, Asep tumbuh dalam lingkungan yang sangat menghargai disiplin, integritas, dan pengabdian kepada bangsa. Ia menyelesaikan pendidikan dasar dan menengah di Jakarta sebelum melanjutkan ke Akademi Militer Magelang, lulus dengan penghargaan tertinggi pada tahun 1979.</p>
                       <p>Setelah meniti karier militer selama lebih dari dua dekade, ia melanjutkan pendidikan di Harvard Kennedy School dan meraih gelar Master dalam Kebijakan Publik, yang semakin memperkokoh fondasi kepemimpinannya dalam memimpin sebuah bangsa besar.</p>
                       <p>Perjalanan panjang pengabdiannya—dari lapangan militer hingga kursi kepresidenan—menjadikannya salah satu pemimpin paling berpengalaman yang pernah dimiliki Indonesia.</p>
                     </div>
                     <div className="mt-8 grid grid-cols-3 gap-3">
                       {[
-                        { img:'https://images.pexels.com/photos/3184418/pexels-photo-3184418.jpeg', cap:'Rapat Kabinet'     },
-                        { img:'https://images.pexels.com/photos/3184639/pexels-photo-3184639.jpeg', cap:'Dialog Rakyat'    },
+                        { img:'https://images.pexels.com/photos/3184418/pexels-photo-3184418.jpeg', cap:'Rapat Kabinet' },
+                        { img:'https://images.pexels.com/photos/3184639/pexels-photo-3184639.jpeg', cap:'Dialog Rakyat' },
                         { img:'https://images.pexels.com/photos/3182759/pexels-photo-3182759.jpeg', cap:'Kunjungan Daerah' },
                       ].map((img,i) => (
                         <div key={i} className="rounded-lg overflow-hidden">
@@ -524,18 +559,17 @@
                             <span className="text-sm font-black text-red-600">{s.value}%</span>
                           </div>
                           <div className="h-2.5 bg-neutral-100 rounded-full overflow-hidden">
-                            <div className="h-full rounded-full progress-bar"
-                              style={{ width:`${s.value}%`, background:'linear-gradient(to right,#dc2626,#f87171)' }}></div>
+                            <div className="h-full rounded-full progress-bar" style={{ width:`${s.value}%`, background:'linear-gradient(to right,#dc2626,#f87171)' }}></div>
                           </div>
                         </div>
                       ))}
                     </div>
                     <div className="mt-10 grid grid-cols-2 gap-4">
                       {[
-                        { icon:'emoji_events',      title:'Penghargaan',     value:'47+' },
-                        { icon:'public',            title:'Negara Dikunjungi',value:'68+' },
-                        { icon:'menu_book',         title:'Karya Tulis',     value:'12'  },
-                        { icon:'record_voice_over', title:'Pidato Nasional', value:'500+'},
+                        { icon:'emoji_events', title:'Penghargaan', value:'47+' },
+                        { icon:'public', title:'Negara Dikunjungi', value:'68+' },
+                        { icon:'menu_book', title:'Karya Tulis', value:'12' },
+                        { icon:'record_voice_over', title:'Pidato Nasional', value:'500+' },
                       ].map((c,i) => (
                         <div key={i} className="bg-neutral-950 rounded-xl p-5 text-center card-hover">
                           <span className="material-icons text-red-500 text-3xl mb-2 block">{c.icon}</span>
@@ -572,7 +606,6 @@
             </div>
           </div>
 
-          {/* Filter */}
           <div className="bg-white border-b border-neutral-100 sticky top-16 z-40">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="flex gap-2 overflow-x-auto py-3" style={{ scrollbarWidth:'none' }}>
@@ -631,7 +664,6 @@
     /* ─── AGENDA ─── */
     function Agenda() {
       const [selected, setSelected] = useState(null);
-
       const calDays = [null,null,null,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31];
       const highlighted = [5,12,19,26];
 
@@ -648,18 +680,17 @@
             </div>
           </div>
 
-          {/* Kategori legend */}
           <div className="bg-white border-b border-neutral-100">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
               <div className="flex flex-wrap gap-4 items-center">
                 <span className="text-xs font-bold text-neutral-400 uppercase tracking-widest">Kategori:</span>
                 {[
-                  { t:'Dialog',    c:'bg-red-600'     },
-                  { t:'Peluncuran',c:'bg-blue-700'    },
+                  { t:'Dialog', c:'bg-red-600' },
+                  { t:'Peluncuran', c:'bg-blue-700' },
                   { t:'Kunjungan', c:'bg-emerald-700' },
-                  { t:'Forum',     c:'bg-amber-600'   },
-                  { t:'Rapat',     c:'bg-purple-700'  },
-                  { t:'Peresmian', c:'bg-cyan-700'    },
+                  { t:'Forum', c:'bg-amber-600' },
+                  { t:'Rapat', c:'bg-purple-700' },
+                  { t:'Peresmian', c:'bg-cyan-700' },
                 ].map((cat,i) => (
                   <div key={i} className="flex items-center gap-1.5">
                     <div className={`w-2.5 h-2.5 rounded-full ${cat.c}`}></div>
@@ -672,7 +703,6 @@
 
           <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-              {/* Agenda list */}
               <div className="lg:col-span-2 space-y-4">
                 {agendas.map((a,i) => (
                   <div key={i} onClick={() => setSelected(selected===i ? null : i)}
@@ -704,9 +734,9 @@
                         </p>
                         <div className="flex flex-wrap gap-2">
                           {[
-                            { icon:'schedule', txt:'09.00 – 17.00 WIB'    },
-                            { icon:'people',   txt:'Terbuka untuk Umum'   },
-                            { icon:'live_tv',  txt:'Siaran Langsung'      },
+                            { icon:'schedule', txt:'09.00 – 17.00 WIB' },
+                            { icon:'people', txt:'Terbuka untuk Umum' },
+                            { icon:'live_tv', txt:'Siaran Langsung' },
                           ].map((b,j) => (
                             <div key={j} className="flex items-center gap-1.5 bg-neutral-50 border border-neutral-100 px-3 py-1.5 rounded text-xs text-neutral-600">
                               <span className="material-icons text-xs leading-none">{b.icon}</span>
@@ -720,9 +750,7 @@
                 ))}
               </div>
 
-              {/* Sidebar */}
               <div className="lg:col-span-1 space-y-5">
-                {/* Mini calendar */}
                 <div className="bg-neutral-950 rounded-xl p-6 text-white">
                   <div className="flex items-center justify-between mb-5">
                     <h3 className="font-bold text-sm">Juli 2026</h3>
@@ -750,14 +778,13 @@
                   </div>
                 </div>
 
-                {/* Stats */}
                 <div className="bg-white rounded-xl border border-neutral-100 p-5">
                   <h3 className="font-bold text-neutral-900 text-sm mb-4">Ringkasan Bulan Ini</h3>
                   <div className="space-y-3">
                     {[
-                      { l:'Total Kegiatan',  v:'6', icon:'event'         },
+                      { l:'Total Kegiatan', v:'6', icon:'event' },
                       { l:'Kota Dikunjungi', v:'5', icon:'location_city' },
-                      { l:'Kegiatan Terbuka',v:'4', icon:'people'        },
+                      { l:'Kegiatan Terbuka', v:'4', icon:'people' },
                     ].map((s,i) => (
                       <div key={i} className="flex items-center justify-between">
                         <div className="flex items-center gap-2 text-neutral-600 text-sm">
@@ -785,6 +812,166 @@
       );
     }
 
+    /* ─── BERITA ─── */
+    function Berita() {
+      const [filter, setFilter] = useState('Semua');
+      const [searchQuery, setSearchQuery] = useState('');
+      const [selectedNews, setSelectedNews] = useState(null);
+      const [visibleCount, setVisibleCount] = useState(6);
+
+      const filtered = useMemo(() => {
+        let result = beritaData;
+        if (filter !== 'Semua') {
+          result = result.filter(b => b.category === filter);
+        }
+        if (searchQuery.trim()) {
+          const q = searchQuery.toLowerCase().trim();
+          result = result.filter(b =>
+            b.title.toLowerCase().includes(q) ||
+            b.excerpt.toLowerCase().includes(q) ||
+            b.content.toLowerCase().includes(q)
+          );
+        }
+        return result;
+      }, [filter, searchQuery]);
+
+      const displayed = filtered.slice(0, visibleCount);
+      const hasMore = filtered.length > visibleCount;
+
+      const loadMore = () => setVisibleCount(prev => Math.min(prev + 6, filtered.length));
+
+      return (
+        <div className="section-enter pt-16">
+          <div className="bg-neutral-950 py-20 relative overflow-hidden">
+            <div className="absolute inset-0 opacity-10">
+              <img src="https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg" alt="" className="w-full h-full object-cover" />
+            </div>
+            <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <span className="text-red-400 text-xs font-bold tracking-widest uppercase">Update Terkini</span>
+              <h1 className="playfair text-5xl font-black text-white mt-3 mb-3">Berita & Aktivitas</h1>
+              <p className="text-neutral-400 max-w-xl text-sm leading-relaxed">Ikuti perkembangan terbaru seputar kegiatan, program, dan pernyataan resmi dari Asep Zaenal Mustofa.</p>
+            </div>
+          </div>
+
+          <div className="bg-white border-b border-neutral-100 sticky top-16 z-40">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
+              <div className="flex flex-col sm:flex-row sm:items-center gap-3 justify-between">
+                <div className="flex gap-2 overflow-x-auto" style={{ scrollbarWidth:'none' }}>
+                  <button onClick={() => setFilter('Semua')}
+                    className={`whitespace-nowrap px-4 py-1.5 rounded-full text-xs font-bold transition-colors ${filter==='Semua' ? 'bg-red-600 text-white' : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200'}`}>
+                    Semua
+                  </button>
+                  {beritaCategories.filter(c => c !== 'Semua').map(c => (
+                    <button key={c} onClick={() => setFilter(c)}
+                      className={`whitespace-nowrap px-4 py-1.5 rounded-full text-xs font-bold transition-colors ${filter===c ? 'bg-red-600 text-white' : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200'}`}>
+                      {c}
+                    </button>
+                  ))}
+                </div>
+                <div className="flex items-center gap-2">
+                  <input type="text" value={searchQuery} onChange={e => setSearchQuery(e.target.value)}
+                    placeholder="Cari berita..."
+                    className="form-input border rounded-lg px-4 py-2 text-sm placeholder-neutral-400 w-full sm:w-56 border-neutral-200 bg-neutral-50 focus:border-red-600 focus:ring-2 focus:ring-red-100 transition-all" />
+                  <span className="material-icons text-neutral-400 text-sm">search</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            {filtered.length === 0 ? (
+              <div className="text-center py-16">
+                <span className="material-icons text-6xl text-neutral-300 block mb-4">article</span>
+                <h3 className="text-xl font-bold text-neutral-700">Tidak ada berita ditemukan</h3>
+                <p className="text-neutral-400 text-sm mt-1">Coba ubah filter atau kata kunci pencarian.</p>
+              </div>
+            ) : (
+              <>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {displayed.map((berita) => (
+                    <div key={berita.id} className="bg-white rounded-2xl shadow-md border border-neutral-100 overflow-hidden card-hover cursor-pointer"
+                      onClick={() => setSelectedNews(berita)}>
+                      <div className="relative overflow-hidden">
+                        <img src={berita.image} alt={berita.title} className="news-img w-full h-52 object-cover transition-transform duration-500 hover:scale-105" />
+                        <div className="absolute top-4 left-4">
+                          <span className={`text-white text-xs font-bold px-3 py-1 rounded-full ${getColor(berita.category)}`}>
+                            {berita.category}
+                          </span>
+                        </div>
+                      </div>
+                      <div className="p-5">
+                        <div className="flex items-center gap-2 text-xs text-neutral-400 mb-2">
+                          <span className="material-icons text-sm leading-none">calendar_today</span>
+                          {berita.date}
+                        </div>
+                        <h3 className="font-bold text-neutral-900 text-base leading-snug mb-2 line-clamp-2">{berita.title}</h3>
+                        <p className="text-neutral-500 text-sm leading-relaxed line-clamp-3">{berita.excerpt}</p>
+                        <div className="mt-4 flex items-center text-red-600 text-sm font-medium">
+                          Baca Selengkapnya <span className="material-icons text-sm leading-none ml-1">arrow_forward</span>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {hasMore && (
+                  <div className="text-center mt-10">
+                    <button onClick={loadMore}
+                      className="bg-red-600 hover:bg-red-700 text-white font-bold text-sm px-8 py-3 rounded transition-colors inline-flex items-center gap-2">
+                      Muat Lebih Banyak <span className="material-icons text-base leading-none">expand_more</span>
+                    </button>
+                  </div>
+                )}
+
+                <div className="text-center mt-4 text-xs text-neutral-400">
+                  Menampilkan {displayed.length} dari {filtered.length} berita
+                </div>
+              </>
+            )}
+          </section>
+
+          {selectedNews && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm"
+              onClick={() => setSelectedNews(null)}>
+              <div className="bg-white rounded-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto shadow-2xl"
+                onClick={e => e.stopPropagation()}>
+                <div className="relative">
+                  <img src={selectedNews.image} alt={selectedNews.title} className="w-full h-64 object-cover" />
+                  <button onClick={() => setSelectedNews(null)}
+                    className="absolute top-4 right-4 bg-black/60 hover:bg-black/80 text-white rounded-full w-10 h-10 flex items-center justify-center transition-colors">
+                    <span className="material-icons">close</span>
+                  </button>
+                  <div className="absolute bottom-0 left-0 right-0 p-6" style={{ background:'linear-gradient(to top, rgba(0,0,0,0.8), transparent)' }}>
+                    <span className={`text-white text-xs font-bold px-3 py-1 rounded-full ${getColor(selectedNews.category)}`}>
+                      {selectedNews.category}
+                    </span>
+                  </div>
+                </div>
+                <div className="p-6">
+                  <div className="flex items-center gap-2 text-xs text-neutral-400 mb-3">
+                    <span className="material-icons text-sm leading-none">calendar_today</span>
+                    {selectedNews.date}
+                  </div>
+                  <h2 className="playfair text-2xl font-black text-neutral-900 mb-4">{selectedNews.title}</h2>
+                  <div className="prose prose-sm max-w-none text-neutral-600 leading-relaxed whitespace-pre-line">
+                    {selectedNews.content}
+                  </div>
+                  <div className="mt-6 flex flex-wrap gap-2 pt-4 border-t border-neutral-100">
+                    <span className="text-xs text-neutral-400">Bagikan:</span>
+                    {['Facebook', 'Twitter', 'WhatsApp'].map(social => (
+                      <button key={social} className="text-xs text-neutral-500 hover:text-red-600 transition-colors px-2 py-1 border border-neutral-200 rounded">
+                        {social}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      );
+    }
+
     /* ─── MASUKAN ─── */
     function Masukan() {
       const [form, setForm] = useState({ nama:'', email:'', topik:'', pesan:'' });
@@ -793,10 +980,10 @@
 
       const validate = () => {
         const e = {};
-        if (!form.nama.trim())                                   e.nama  = 'Nama wajib diisi';
-        if (!form.email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/))   e.email = 'Email tidak valid';
-        if (!form.topik)                                         e.topik = 'Silakan pilih topik';
-        if (form.pesan.trim().length < 10)                       e.pesan = 'Pesan minimal 10 karakter';
+        if (!form.nama.trim()) e.nama = 'Nama wajib diisi';
+        if (!form.email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) e.email = 'Email tidak valid';
+        if (!form.topik) e.topik = 'Silakan pilih topik';
+        if (form.pesan.trim().length < 10) e.pesan = 'Pesan minimal 10 karakter';
         return e;
       };
 
@@ -824,7 +1011,6 @@
 
           <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
-              {/* Info sidebar */}
               <div className="lg:col-span-1 space-y-5">
                 <div>
                   <h2 className="playfair text-2xl font-black text-neutral-900 mb-3">Kontak Resmi</h2>
@@ -833,9 +1019,9 @@
                 <div className="space-y-3">
                   {[
                     { icon:'location_on', title:'Alamat Kantor', value:'Jl. Merdeka Barat No. 1, Jakarta Pusat 10110' },
-                    { icon:'phone',       title:'Telepon',       value:'(021) 3847-2000'                              },
-                    { icon:'email',       title:'Email',         value:'aspirasi@ahmadrp.go.id'                      },
-                    { icon:'schedule',    title:'Jam Pelayanan', value:'Senin–Jumat, 08.00–16.00 WIB'               },
+                    { icon:'phone', title:'Telepon', value:'(021) 3847-2000' },
+                    { icon:'email', title:'Email', value:'aspirasi@asepzm.go.id' },
+                    { icon:'schedule', title:'Jam Pelayanan', value:'Senin–Jumat, 08.00–16.00 WIB' },
                   ].map((c,i) => (
                     <div key={i} className="flex gap-4 p-4 bg-white rounded-xl border border-neutral-100 shadow-sm">
                       <div className="bg-red-50 rounded-lg p-2 h-fit flex-shrink-0">
@@ -851,9 +1037,9 @@
                 <div className="bg-neutral-950 rounded-xl p-6">
                   <h3 className="font-bold text-white text-sm mb-4">Statistik Aspirasi</h3>
                   {[
-                    { l:'Masukan Diterima',  v:'12.847' },
-                    { l:'Ditindaklanjuti',   v:'9.231'  },
-                    { l:'Tingkat Respons',   v:'97%'    },
+                    { l:'Masukan Diterima', v:'12.847' },
+                    { l:'Ditindaklanjuti', v:'9.231' },
+                    { l:'Tingkat Respons', v:'97%' },
                   ].map((s,i) => (
                     <div key={i} className="flex justify-between text-sm py-1.5 border-b border-neutral-800 last:border-0">
                       <span className="text-neutral-400">{s.l}</span>
@@ -863,7 +1049,6 @@
                 </div>
               </div>
 
-              {/* Form */}
               <div className="lg:col-span-2">
                 {submitted ? (
                   <div className="bg-white rounded-2xl border border-neutral-100 shadow p-12 text-center">
@@ -873,8 +1058,7 @@
                     <h2 className="playfair text-2xl font-black text-neutral-900 mb-3">Terima Kasih!</h2>
                     <p className="text-neutral-500 text-sm mb-1">Masukan <strong className="text-neutral-800">{form.nama}</strong> telah berhasil kami terima.</p>
                     <p className="text-neutral-400 text-xs mb-8">Tim kami akan menindaklanjuti aspirasi Anda dalam 3–5 hari kerja. Konfirmasi dikirim ke <strong className="text-neutral-600">{form.email}</strong></p>
-                    <button
-                      onClick={() => { setSubmitted(false); setForm({nama:'',email:'',topik:'',pesan:''}); setErrors({}); }}
+                    <button onClick={() => { setSubmitted(false); setForm({nama:'',email:'',topik:'',pesan:''}); setErrors({}); }}
                       className="bg-red-600 hover:bg-red-700 text-white font-bold text-sm px-7 py-3 rounded transition-colors">
                       Kirim Masukan Lain
                     </button>
@@ -908,8 +1092,8 @@
                           <option value="" disabled>-- Pilih topik aspirasi --</option>
                           <option>Pendidikan</option>
                           <option>Kesehatan</option>
-                          <option>Ekonomi &amp; Lapangan Kerja</option>
-                          <option>Pertahanan &amp; Keamanan</option>
+                          <option>Ekonomi & Lapangan Kerja</option>
+                          <option>Pertahanan & Keamanan</option>
                           <option>Lingkungan Hidup</option>
                           <option>Infrastruktur</option>
                           <option>Lainnya</option>
@@ -920,8 +1104,7 @@
                       <div>
                         <label className="block text-xs font-bold text-neutral-700 uppercase tracking-wider mb-2">Masukan / Saran *</label>
                         <textarea value={form.pesan} onChange={e => setField('pesan', e.target.value)}
-                          placeholder="Tuliskan masukan, saran, atau aspirasi Anda di sini..."
-                          rows="6"
+                          placeholder="Tuliskan masukan, saran, atau aspirasi Anda di sini..." rows="6"
                           className={`form-input w-full border rounded-lg px-4 py-3 text-sm placeholder-neutral-400 resize-none transition-all ${errors.pesan ? 'border-red-500 bg-red-50' : 'border-neutral-200 bg-neutral-50'}`}></textarea>
                         <div className="flex justify-between mt-1">
                           {errors.pesan ? <p className="text-red-600 text-xs">{errors.pesan}</p> : <span/>}
@@ -992,12 +1175,12 @@
                 <ul className="space-y-3 text-sm">
                   <li className="flex items-start gap-2"><span className="material-icons text-sm text-red-500 mt-0.5 leading-none">location_on</span>Jl. Merdeka Barat No. 1, Jakarta Pusat</li>
                   <li className="flex items-center gap-2"><span className="material-icons text-sm text-red-500 leading-none">phone</span>(021) 3847-2000</li>
-                  <li className="flex items-center gap-2"><span className="material-icons text-sm text-red-500 leading-none">email</span>aspirasi@ahmadrp.go.id</li>
+                  <li className="flex items-center gap-2"><span className="material-icons text-sm text-red-500 leading-none">email</span>aspirasi@asepzm.go.id</li>
                 </ul>
               </div>
             </div>
             <div className="border-t border-neutral-800 pt-6 flex flex-col sm:flex-row justify-between items-center gap-3 text-xs">
-              <p>&copy; 2026 Ahmad Rizki Pratama. Seluruh hak cipta dilindungi.</p>
+              <p>&copy; 2026 Asep Zaenal Mustofa. Seluruh hak cipta dilindungi.</p>
               <p>Dibuat dengan <span className="text-red-500">&#9829;</span> untuk Indonesia</p>
             </div>
           </div>
@@ -1009,9 +1192,9 @@
     function ScrollToTop() {
       const [show, setShow] = useState(false);
       useEffect(() => {
-        const h = () => setShow(window.scrollY > 400);
-        window.addEventListener('scroll', h);
-        return () => window.removeEventListener('scroll', h);
+        const handleScroll = () => setShow(window.scrollY > 400);
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
       }, []);
       if (!show) return null;
       return (
@@ -1026,7 +1209,14 @@
     /* ─── APP ROOT ─── */
     function App() {
       const [page, setPage] = useState('beranda');
-      const views = { beranda:<Beranda setPage={setPage}/>, tentang:<Tentang/>, program:<Program/>, agenda:<Agenda/>, masukan:<Masukan/> };
+      const views = {
+        beranda: <Beranda setPage={setPage} />,
+        tentang: <Tentang />,
+        program: <Program />,
+        agenda: <Agenda />,
+        berita: <Berita />,
+        masukan: <Masukan />
+      };
       return (
         <>
           <Navbar page={page} setPage={setPage} />
